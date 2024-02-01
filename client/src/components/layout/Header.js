@@ -1,5 +1,12 @@
 import React from 'react';
-import { Flex, Button, Box, Image, Spacer, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Flex,
+  Button,
+  Box,
+  Image,
+  Spacer,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 
 const Header = () => {
   const logoPath = '/BorderDollarFullLogo.jpeg'; // Replace with the actual path to your logo
@@ -15,14 +22,15 @@ const Header = () => {
       h={headerHeight}
       bg="blue.600"
       color="white"
-      px={{base: 1, md: 6}}
+      px={{ base: 1, md: 6 }}
       boxShadow="sm"
     >
       {/* Logo */}
       <Box display={{ base: 'block', md: 'none' }} flexShrink={0} h="100%">
-        <Image src={logoPath} maxH="full" objectFit="contain" /> {/* Ensure the logo fits within the header */}
+        <Image src={logoPath} maxH="full" objectFit="contain" />{' '}
+        {/* Ensure the logo fits within the header */}
       </Box>
-      
+
       {/* Spacer to push the connect button to the right */}
       <Spacer />
 
