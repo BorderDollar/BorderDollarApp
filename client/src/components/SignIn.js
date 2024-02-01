@@ -16,7 +16,7 @@ import {
 export default function SignIn() {
   return (
     <Grid
-      minHeight="100vh"
+      minHeight={{ base: '100%', md: '100vh' }}
       templateColumns={{ base: 'repeat(1, 1fr)' }} // 1 column on base, 2 columns from md up
       templateRows="1fr"
       templateAreas={{
