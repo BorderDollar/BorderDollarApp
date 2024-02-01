@@ -1,55 +1,36 @@
 import React from 'react';
-import { Box, Flex, Text, Button, IconButton, useDisclosure, Stack } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Flex, Button, Box, Image, Spacer, useBreakpointValue } from '@chakra-ui/react';
 
 const Header = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const logoPath = '/BorderDollarFullLogo.jpeg'; // Replace with the actual path to your logo
+  const headerHeight = useBreakpointValue({ base: '60px', md: '60px' }); // Consistent height on all screens
 
   return (
-    <Box bg="blue.600" color="white" px={4} boxShadow="sm">
-      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-        <IconButton
-          size={'md'}
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          aria-label={'Open Menu'}
-          display={{ md: 'none' }}
-          onClick={isOpen ? onClose : onOpen}
-        />
-        <Text fontSize="lg" fontWeight="bold">
-          My App
-        </Text>
-        <Flex alignItems={'center'}>
-          <Stack direction={'row'} spacing={7} display={{ base: 'none', md: 'flex' }}>
-            {/* Define your navigation links here */}
-            <Button as="a" href="/pools" variant="link" color="white">
-              Pools
-            </Button>
-            <Button as="a" href="/portfolio" variant="link" color="white">
-              Portfolio
-            </Button>
-            {/* Add more navigation links if needed */}
-          </Stack>
-          <Button colorScheme="blue" variant="outline" ml={4}>
-            Connect
-          </Button>
-        </Flex>
-      </Flex>
+    <Flex
+      as="header"
+      align="center"
+      justify="space-between"
+      wrap="wrap"
+      w="100%"
+      h={headerHeight}
+      bg="blue.600"
+      color="white"
+      px={{base: 1, md: 6}}
+      boxShadow="sm"
+    >
+      {/* Logo */}
+      <Box display={{ base: 'block', md: 'none' }} flexShrink={0} h="100%">
+        <Image src={logoPath} maxH="full" objectFit="contain" /> {/* Ensure the logo fits within the header */}
+      </Box>
+      
+      {/* Spacer to push the connect button to the right */}
+      <Spacer />
 
-      {isOpen ? (
-        <Box pb={4} display={{ md: 'none' }}>
-          <Stack as={'nav'} spacing={4}>
-            {/* Repeat your navigation links here for mobile */}
-            <Button as="a" href="/pools" variant="link" color="white">
-              Pools
-            </Button>
-            <Button as="a" href="/portfolio" variant="link" color="white">
-              Portfolio
-            </Button>
-            {/* Add more navigation links if needed */}
-          </Stack>
-        </Box>
-      ) : null}
-    </Box>
+      {/* Connect Button */}
+      <Button colorScheme="teal" variant="solid" size="md" maxHeight="100%">
+        Connect
+      </Button>
+    </Flex>
   );
 };
 
