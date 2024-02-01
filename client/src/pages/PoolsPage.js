@@ -19,7 +19,7 @@ const PoolsPage = () => {
   return isMobile ? (
     // Mobile view with stacked layout
     <Flex direction="column" h="100vh">
-      <Box bg={headerBg} p={4}>
+      <Box bg={headerBg} >
         <Header />
       </Box>
       <Box flex="1" bg={bg} p={4}>
@@ -37,7 +37,7 @@ const PoolsPage = () => {
       <Box gridRow="1 / 3" gridColumn="1" bg={bg}>
         <Sidebar />
       </Box>
-      <Box gridRow="1" gridColumn="2" bg={headerBg} p={4}>
+      <Box gridRow="1" gridColumn="2" bg={headerBg}>
         <Header />
       </Box>
       <Box gridRow="2" gridColumn="2" bg={bg} p={4}>
