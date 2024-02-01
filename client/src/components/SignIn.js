@@ -40,7 +40,7 @@ export default function SignIn() {
           justifyContent="center"
           overflow="auto"
           height="100vh"
-          w="560px"
+          w={{ base: "100%", md: "560px" }}
         >
           <Box p="16px" m="20px" boxShadow="lg" shadow="none" w="432px">
             <Image src="BorderDollarFullLogo.jpeg" w="400px"></Image>
