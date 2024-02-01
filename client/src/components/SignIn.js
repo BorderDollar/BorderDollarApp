@@ -43,8 +43,8 @@ export default function SignIn() {
           w={{ base: '100%', md: '560px' }}
         >
           <Box
-            p={{ md: '16px' }}
-            m={{ md: '20px' }}
+            p="16px"
+            m="20px"
             boxShadow="lg"
             shadow="none"
             w={{ base: '100%', md: '432px' }}
