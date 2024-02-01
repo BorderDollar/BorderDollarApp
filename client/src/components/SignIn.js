@@ -40,9 +40,15 @@ export default function SignIn() {
           justifyContent="center"
           overflow="auto"
           height="100vh"
-          w={{ base: "100%", md: "560px" }}
+          w={{ base: '100%', md: '560px' }}
         >
-          <Box p="16px" m="20px" boxShadow="lg" shadow="none" w={{ base: "100%", md: "432px" }}>
+          <Box
+            p={{ md: '16px' }}
+            m={{ md: '20px' }}
+            boxShadow="lg"
+            shadow="none"
+            w={{ base: '100%', md: '432px' }}
+          >
             <Image src="BorderDollarFullLogo.jpeg" w="400px"></Image>
             <Heading size="md" pt="10px" pb="10px" mt="16px" mb="16px">
               Sign in to start fueling global trade
