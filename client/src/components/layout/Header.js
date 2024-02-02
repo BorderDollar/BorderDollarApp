@@ -35,7 +35,14 @@ const Header = () => {
       <Spacer />
 
       {/* Connect Button */}
-      <Button colorScheme="teal" variant="solid" size="md" maxHeight="100%">
+      <Button
+        colorScheme="teal"
+        variant="solid"
+        size="md"
+        maxHeight="100%"
+        w={{base: "130px", md: "198px"}}
+        h="31px"
+      >
         Connect
       </Button>
     </Flex>
