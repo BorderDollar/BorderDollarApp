@@ -3,42 +3,84 @@ import {
   Box,
   VStack,
   HStack,
-  IconButton,
+  Button,
   Image,
+  Divider,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { FaHome, FaUser, FaCog } from 'react-icons/fa'; // Example icons from react-icons
+import { FaTachometerAlt, FaBriefcase, FaBoxes } from 'react-icons/fa';
 
 const Sidebar = () => {
-  // This will determine whether to show a vertical or horizontal stack based on the screen size
-  const StackComponent = useBreakpointValue({ base: HStack, md: VStack });
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const logoPath = '/BorderDollarFullLogo.jpeg'; // Replace with the actual path to your logo
 
+  // Conditional styles for mobile and desktop views
+  const sidebarStyles = {
+    position: isMobile ? 'fixed' : 'fixed',
+    bottom: isMobile ? 0 : 'auto',
+    p: isMobile ? 2 : 4,
+    width: isMobile ? 'full' : '220px',
+    height: isMobile ? '60px' : '100vh', // Height should be limited on mobile
+    bg: isMobile ? 'white' : 'white',
+    color: isMobile ? 'gray.700' : 'blue.500',
+    zIndex: isMobile ? 'sticky' : 'docked',
+    justifyContent: isMobile ? 'space-around' : 'flex-start',
+    boxShadow: isMobile ? '0 -2px 10px rgba(0, 0, 0, 0.1)' : 'none', // Optional shadow for the mobile bottom bar
+    left: isMobile ? '0' : 'none',
+  };
+
   return (
-    <Box
-      as={StackComponent}
-      spacing={4}
-      align="stretch"
-      position="fixed"
-      p={4}
-      left={0}
-      right={0}
-      bottom={{ base: 0, md: 'auto' }}
-      top={{ md: 0 }}
-      width={{ md: '220px' }}
-      height={{ md: '100vh' }}
-      bg="blue.500"
-      color="white"
-      zIndex="docked"
-      justifyContent={{ base: 'space-around', md: 'flex-start' }} // Spread items on mobile, stack at the start on desktop
-      borderTopWidth={{ base: '1px', md: 0 }}
-      borderTopColor={{ base: 'gray.200', md: 'transparent' }}
-    >
-      {/* Your sidebar content, which will now adjust based on the breakpoint */}
-      <IconButton aria-label="Home" icon={<FaHome />} />
-      <IconButton aria-label="Profile" icon={<FaUser />} />
-      <IconButton aria-label="Settings" icon={<FaCog />} />
-      {/* More items... */}
+    <Box {...sidebarStyles}>
+      {!isMobile && (
+        <>
+          <Box p={4}>
+            <Image src={logoPath} height="60px" objectFit="contain" />
+          </Box>
+          <Divider borderColor="gray.200" />
+        </>
+      )}
+
+      {/* The actual stack of buttons */}
+      <Box as={isMobile ? HStack : VStack} spacing={4} pt={isMobile ? 0 : 6}>
+        {/* Dashboard Button */}
+        <Button
+          leftIcon={<FaTachometerAlt />}
+          variant="ghost"
+          justifyContent="flex-start"
+          width="full"
+          _hover={{ bg: 'blue.500', color: 'white' }}
+          iconSpacing={4}
+          fontSize={isMobile ? 'xs' : 'none'}
+        >
+          Dashboard
+        </Button>
+
+        {/* Portfolio Button */}
+        <Button
+          leftIcon={<FaBriefcase />}
+          variant="ghost"
+          justifyContent="flex-start"
+          width="full"
+          _hover={{ bg: 'blue.500', color: 'white' }}
+          iconSpacing={4}
+          fontSize={isMobile ? 'xs' : 'none'}
+        >
+          Portfolio
+        </Button>
+
+        {/* Misc Button */}
+        <Button
+          leftIcon={<FaBoxes />}
+          variant="ghost"
+          justifyContent="flex-start"
+          width="full"
+          _hover={{ bg: 'blue.500', color: 'white' }}
+          iconSpacing={4}
+          fontSize={isMobile ? 'xs' : 'none'}
+        >
+          Misc
+        </Button>
+      </Box>
     </Box>
   );
 };
