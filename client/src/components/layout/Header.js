@@ -20,7 +20,7 @@ const Header = () => {
       wrap="wrap"
       w="100%"
       h={headerHeight}
-      bg="blue.600"
+      bg="white"
       color="white"
       px={{ base: 1, md: 6 }}
       boxShadow="sm"
@@ -36,11 +36,11 @@ const Header = () => {
 
       {/* Connect Button */}
       <Button
-        colorScheme="teal"
+        colorScheme="orange"
         variant="solid"
         size="md"
         maxHeight="100%"
-        w={{base: "130px", md: "198px"}}
+        w={{ base: '130px', md: '262px' }}
         h="31px"
       >
         Connect
