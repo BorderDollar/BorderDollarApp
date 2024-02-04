@@ -23,7 +23,7 @@ const Sidebar = () => {
     height: isMobile ? '60px' : '100vh', // Height should be limited on mobile
     bg: isMobile ? 'white' : 'white',
     color: isMobile ? 'gray.700' : 'blue.500',
-    zIndex: isMobile ? 'sticky' : 'docked',
+    zIndex: isMobile ? 'sticky' : '99999',
     justifyContent: isMobile ? 'space-around' : 'flex-start',
     boxShadow: isMobile ? '0 -2px 10px rgba(0, 0, 0, 0.1)' : 'none', // Optional shadow for the mobile bottom bar
     left: isMobile ? '0' : 'none',
