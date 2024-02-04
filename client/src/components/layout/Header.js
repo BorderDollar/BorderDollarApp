@@ -23,11 +23,15 @@ const Header = () => {
       bg="white"
       color="white"
       px={{ base: 1, md: 6 }}
-      boxShadow="sm"
+      // boxShadow="sm"
+      position="fixed"
+      zIndex="banner"
+      top={0}
+      left={0}
     >
       {/* Logo */}
       <Box display={{ base: 'block', md: 'none' }} flexShrink={0} h="100%">
-        <Image src={logoPath} maxH="full" objectFit="contain" />{' '}
+        <Image src={logoPath} maxH="full" objectFit="contain" />
         {/* Ensure the logo fits within the header */}
       </Box>
 
