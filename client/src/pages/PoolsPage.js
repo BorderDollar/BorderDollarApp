@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Flex,
-  useBreakpointValue,
-  Grid,
-} from '@chakra-ui/react';
+import { Box, Flex, useBreakpointValue, Grid } from '@chakra-ui/react';
 import Header from '../components/layout/Header';
 import Sidebar from '../components/layout/Sidebar';
 import MainContent from '../components/layout/MainContent';
@@ -37,7 +32,7 @@ const PoolsPage = () => {
       <Box gridRow="1" gridColumn="2">
         <Header />
       </Box>
-      <Box gridRow="2" gridColumn="2" px={{ base: '16px', md: '24px' }}>
+      <Box gridRow="2" gridColumn="2" px={{ base: '16px', md: '24px' }} pb={2}>
         {/* Your main content goes here */}
         <MainContent />
       </Box>
