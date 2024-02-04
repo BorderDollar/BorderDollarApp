@@ -1,11 +1,11 @@
 import React from 'react';
-import { VStack, Grid, Text, Box } from '@chakra-ui/react';
+import { VStack, Grid, Text, Box, Badge, Flex } from '@chakra-ui/react';
 
 const PoolsList = ({ pools }) => {
   // Define the grid template for consistency between the header and pool items
   const gridTemplateColumns = {
     base: 'repeat(1, 1fr)',
-    md: '3fr 3fr 2fr 1fr 3fr',
+    md: '3.5fr 3fr 2fr 1fr 2.5fr',
   };
 
   return (
@@ -37,15 +37,14 @@ const PoolsList = ({ pools }) => {
           >
             {/* Ensure the box respects the grid's column width */}
             <Text isTruncated>{pool.name}</Text>
-            <Text>{pool.assetClass}</Text>
-            <Text>{pool.valueLocked}</Text>
-            <Text>{pool.apr}</Text>
-            <Text>{pool.status}</Text>
-            {/* <Box>
-              <Button size="sm" colorScheme="teal">
-                Invest
-              </Button>
-            </Box> */}
+            <Text isTruncated>{pool.assetClass}</Text>
+            <Text isTruncated>{pool.valueLocked}</Text>
+            <Text isTruncated>{pool.apr}</Text>
+            <Flex isTruncated alignItems="center">
+              <Badge isTruncated colorScheme={pool.status === 'Open for investments' ? 'green' : 'orange'}>
+                {pool.status}
+              </Badge>
+            </Flex>
           </Grid>
         </Box>
       ))}
