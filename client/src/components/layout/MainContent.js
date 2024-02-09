@@ -10,6 +10,7 @@ const samplePoolsData = [
     valueLocked: '4,608,059 USDC',
     apr: '5.0%',
     status: 'Open for investments',
+    id: '1'
   },
   {
     name: 'New Silver Series 3',
