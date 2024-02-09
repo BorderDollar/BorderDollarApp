@@ -8,6 +8,7 @@ import {
   Flex,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const PoolsList = ({ pools }) => {
   // Determine if it's a mobile view
@@ -33,6 +34,8 @@ const PoolsList = ({ pools }) => {
       {/* Pool Items */}
       {pools.map((pool, index) => (
         <Box
+          as={RouterLink}
+          to={`/pools/${pool.id}`}
           key={index}
           borderWidth="1px"
           borderRadius="md"
@@ -84,10 +87,18 @@ const PoolsList = ({ pools }) => {
             alignItems="center"
           >
             {/* Ensure the box respects the grid's column width */}
-            <Text isTruncated><b>Name:</b> {pool.name}</Text>
-            <Text isTruncated><b>Asset Class:</b> {pool.assetClass}</Text>
-            <Text isTruncated><b>Value Locked:</b> {pool.valueLocked}</Text>
-            <Text isTruncated><b>APR:</b> {pool.apr}</Text>
+            <Text isTruncated>
+              <b>Name:</b> {pool.name}
+            </Text>
+            <Text isTruncated>
+              <b>Asset Class:</b> {pool.assetClass}
+            </Text>
+            <Text isTruncated>
+              <b>Value Locked:</b> {pool.valueLocked}
+            </Text>
+            <Text isTruncated>
+              <b>APR:</b> {pool.apr}
+            </Text>
             <Flex isTruncated alignItems="center">
               <Badge
                 isTruncated
