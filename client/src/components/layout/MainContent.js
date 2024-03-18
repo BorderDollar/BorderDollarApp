@@ -91,7 +91,7 @@ const MainContent = () => {
         {/* Content block for Total value locked (TVL) */}
         <Heading fontSize="lg">Total Invoice Value</Heading>
         <Text fontSize="3xl" mt={1}>
-          US$60,000
+          US$151,000
         </Text>
         {/* More content blocks go here */}
       </Box>
