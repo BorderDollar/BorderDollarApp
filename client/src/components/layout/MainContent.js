@@ -1,69 +1,12 @@
 import React from 'react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import PoolsList from '../pools/PoolsList';
+import placeholderPoolData from '../../data/placeholderData'; 
 // You may need additional imports depending on your content
 
-const samplePoolsData = [
-  {
-    name: 'Anemoy Liquid Treasury Fund 1',
-    assetClass: 'US Treasuries',
-    valueLocked: '4,608,059 USDC',
-    apr: '5.0%',
-    status: 'Open for investments',
-    id: '1'
-  },
-  {
-    name: 'New Silver Series 3',
-    assetClass: 'Real Estate Bridge',
-    valueLocked: 'N/A',
-    apr: '8.0%',
-    status: 'Upcoming',
-  },
-  {
-    name: 'BlockTower Series 4',
-    assetClass: 'Structured Credit',
-    valueLocked: '97,515,862 DAI',
-    apr: '4.0%',
-    status: 'Maker Pool',
-  },
-  {
-    name: 'BlockTower Series 3',
-    assetClass: 'Structured Credit',
-    valueLocked: '89,680,937 DAI',
-    apr: '4.0%',
-    status: 'Maker Pool',
-  },
-  {
-    name: 'New Silver Series 2',
-    assetClass: 'Real Estate Bridge Loans',
-    valueLocked: '69,680,937 DAI',
-    apr: '2.0%',
-    status: 'Maker Pool',
-  },
-  {
-    name: 'ALT 1.0 SPV',
-    assetClass: 'Invoice Financing',
-    valueLocked: '680,937 DAI',
-    apr: '5.0%',
-    status: 'Open for investments',
-  },
-  {
-    name: 'BlockTower Series 1',
-    assetClass: 'Whole Loans',
-    valueLocked: '0 DAI',
-    apr: '4.0%',
-    status: 'Maker Pool',
-  },
-  {
-    name: 'BlockTower Series 2',
-    assetClass: 'Debt Facilities',
-    valueLocked: '0 DAI',
-    apr: '4.0%',
-    status: 'Maker Pool',
-  },
-];
-
 const MainContent = () => {
+  const poolDataArray = Object.values(placeholderPoolData);
+
   return (
     <Flex
       direction="column" // Stack the content vertically
@@ -95,7 +38,7 @@ const MainContent = () => {
         </Text>
         {/* More content blocks go here */}
       </Box>
-      <PoolsList pools={samplePoolsData} />
+      <PoolsList pools={ poolDataArray } />
     </Flex>
   );
 };
