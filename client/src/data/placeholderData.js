@@ -52,11 +52,11 @@ const placeholderPoolData = {
     },
     "6": {
       id: "6",
-      name: 'ALT 1.0 SPV',
-      assetClass: 'Invoice Financing',
-      valueLocked: '680,937 DAI',
-      apr: '5.0%',
-      status: 'Open for investments',
+      name: 'New Beginnings',
+      assetClass: 'Trade Invoice',
+      valueLocked: '15,000 USDC',
+      apr: '8.0%',
+      status: 'Closed',
     },
     "7": {
       id: "7",
