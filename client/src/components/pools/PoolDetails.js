@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Text, VStack, Heading, Divider } from '@chakra-ui/react';
+import { Box, Flex, Text, VStack, Heading, Divider } from '@chakra-ui/react';
 import placeholderPoolData from '../../data/placeholderData'; // Adjust the import path as needed
 
 const PoolDetails = () => {
@@ -8,27 +8,23 @@ const PoolDetails = () => {
   const poolData = placeholderPoolData[poolId] || placeholderPoolData['12345']; // Fallback to a default ID if not found
 
   return (
-    <VStack spacing={4} align="stretch">
-      <Box
-        p={5}
-        shadow="md"
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-      >
-        <Heading size="lg" mb={2}>
+    <Flex
+      direction="column" // Stack the content vertically
+      // Adjust the below properties according to your layout
+      // bg="gray.50" // Light gray background
+      minHeight="calc(100vh - 60px)" // Subtract header height from full viewport height
+      transition="margin 0.2s ease-out" // Smooth transition for margin changes
+      gap="24px"
+      pt={{ base: '80px', md: '0px' }}
+      pb={{ base: '30px', md: '0px' }}
+    >
+      <Flex direction="column">
+        <Heading as="h1" size={{ base: 'md', md: 'lg' }} w="100%">
           {poolData.name}
         </Heading>
-        <Divider my={4} />
-        <Text fontSize="md">Asset Class: {poolData.assetClass}</Text>
-        <Text fontSize="md">Value Locked: {poolData.valueLocked}</Text>
-        <Text fontSize="md">
-          Average Asset Maturity: {poolData.averageMaturity}
-        </Text>
-        {/* Render more pool details here */}
-      </Box>
-      {/* Add additional sections for the pool details page */}
-    </VStack>
+        <Text fontSize="lg">{poolData.assetClass}</Text>
+      </Flex>
+    </Flex>
   );
 };
 
