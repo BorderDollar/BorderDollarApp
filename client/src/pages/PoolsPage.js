@@ -5,7 +5,7 @@ import Sidebar from '../components/layout/Sidebar';
 import MainContent from '../components/layout/MainContent';
 
 const PoolsPage = () => {
-  // Determine if it's a mobile view
+
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return isMobile ? (
