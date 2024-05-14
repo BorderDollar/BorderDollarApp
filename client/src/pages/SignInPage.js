@@ -42,7 +42,7 @@ export default function SignIn() {
       setEmailSent(true);
       toast({
         title: 'Check your email',
-        description: 'A sign-in link has been sent to your email address.',
+        description: 'A magic BorderDollar link has been sent to your email address. You may close this tab now.',
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -122,7 +122,9 @@ export default function SignIn() {
                   {email}
                 </Text>
                 <Text mt="16px">
-                  Check your email, and click on the link to log in!
+                  Check your email, and click on the link to log in! 
+                  <br></br>
+                  <b>You may close this tab now.</b>
                 </Text>
               </Flex>
             ) : (
@@ -141,7 +143,7 @@ export default function SignIn() {
                   />
                 </FormControl>
                 {!isSigningUp && (
-                  <Checkbox defaultIsChecked mt={4}>
+                  <Checkbox  mt={4}>
                     Remember me
                   </Checkbox>
                 )}
