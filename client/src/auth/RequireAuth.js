@@ -10,7 +10,7 @@ function RequireAuth({ children }) {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
-  if (location.pathname.startsWith('/admin') && user.role !== 'admin') {
+  if (location.pathname.startsWith('/admin') && user.app_role !== 'admin') {
     return <Navigate to="/pools" replace />;
   }
 

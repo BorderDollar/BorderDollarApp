@@ -32,17 +32,18 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const fetchUserData = async (authUser) => {
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', authUser.id)
-      .single();
+    const { data, error } = await supabase.auth.getUser();
     
     if (error) {
-      console.error('Error fetching user role:', error);
-      setUser(authUser); // Set user without role
+      console.error('Error fetching user data:', error);
+      setUser(authUser); // Set user without metadata
     } else {
-      setUser({ ...authUser, role: data.role });
+      const userWithMetadata = {
+        ...authUser,
+        app_role: data.user.user_metadata.app_role,
+      };
+      console.log(data.user.user_metadata.app_role)
+      setUser(userWithMetadata);
     }
     setLoading(false);
   };

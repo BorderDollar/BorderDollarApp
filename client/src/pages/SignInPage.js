@@ -27,6 +27,7 @@ export default function SignIn() {
       email,
       options: {
         emailRedirectTo: process.env.REACT_APP_SUPABASE_REDIRECT_URL,
+        data: { app_role: 'user' },
       },
     });
 
@@ -42,7 +43,8 @@ export default function SignIn() {
       setEmailSent(true);
       toast({
         title: 'Check your email',
-        description: 'A magic BorderDollar link has been sent to your email address. You may close this tab now.',
+        description:
+          'A magic BorderDollar link has been sent to your email address. You may close this tab now.',
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -122,7 +124,7 @@ export default function SignIn() {
                   {email}
                 </Text>
                 <Text mt="16px">
-                  Check your email, and click on the link to log in! 
+                  Check your email, and click on the link to log in!
                   <br></br>
                   <b>You may close this tab now.</b>
                 </Text>
@@ -142,11 +144,7 @@ export default function SignIn() {
                     placeholder="Enter your email"
                   />
                 </FormControl>
-                {!isSigningUp && (
-                  <Checkbox  mt={4}>
-                    Remember me
-                  </Checkbox>
-                )}
+                {!isSigningUp && <Checkbox mt={4}>Remember me</Checkbox>}
                 <Button width="full" mt={4} onClick={handleMagicLinkSignIn}>
                   {isSigningUp ? 'Sign Up' : 'Sign In'}
                 </Button>
