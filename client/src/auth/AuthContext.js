@@ -40,9 +40,9 @@ export const AuthProvider = ({ children }) => {
     } else {
       const userWithMetadata = {
         ...authUser,
-        app_role: data.user.user_metadata.app_role,
+        app_role: data.user.app_metadata.app_role,
       };
-      console.log(data.user.user_metadata.app_role)
+      console.log(data.user.app_metadata.app_role)
       setUser(userWithMetadata);
     }
     setLoading(false);
