@@ -23,16 +23,54 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route path="/signin" element={
-              <RedirectIfLoggedIn>
-                <SignIn />
-              </RedirectIfLoggedIn>
-            } />
-            <Route path="/pools" element={<RequireAuth><PoolsPage /></RequireAuth>} />
-            <Route path="/pools/:poolId" element={<RequireAuth><PoolDetailPage /></RequireAuth>} />
-            <Route path="/admin" element={<RequireAuth><AdminDashboard /></RequireAuth>} />
-            <Route path="/admin/create" element={<RequireAuth><CreateCampaign /></RequireAuth>} />
-            <Route path="/admin/edit/:id" element={<RequireAuth><EditCampaign /></RequireAuth>} />
+            <Route
+              path="/signin"
+              element={
+                <RedirectIfLoggedIn>
+                  <SignIn />
+                </RedirectIfLoggedIn>
+              }
+            />
+            <Route
+              path="/pools"
+              element={
+                <RequireAuth>
+                  <PoolsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/pools/:poolId"
+              element={
+                <RequireAuth>
+                  <PoolDetailPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <RequireAuth>
+                  <AdminDashboard />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/create"
+              element={
+                <RequireAuth>
+                  <CreateCampaign />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/edit/:id"
+              element={
+                <RequireAuth>
+                  <EditCampaign />
+                </RequireAuth>
+              }
+            />
             <Route path="/" element={<Navigate replace to="/signin" />} />
           </Routes>
         </AuthProvider>
