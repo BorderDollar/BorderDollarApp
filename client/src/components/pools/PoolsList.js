@@ -20,6 +20,10 @@ const PoolsList = ({ pools }) => {
     md: '3.5fr 3fr 2fr 1fr 2.5fr',
   };
 
+  const formatNumberWithCommas = number => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   return isMobile ? (
     <VStack spacing={2} align="stretch" w="full">
       {/* Header Row */}
@@ -35,7 +39,7 @@ const PoolsList = ({ pools }) => {
       {pools.map((pool, index) => (
         <Box
           as={RouterLink}
-          to={`/pools/${pool.id}`}
+          to={`/pools/${pool.campaign_id}`}
           key={index}
           borderWidth="1px"
           borderRadius="md"
@@ -50,10 +54,13 @@ const PoolsList = ({ pools }) => {
             alignItems="center"
           >
             {/* Ensure the box respects the grid's column width */}
-            <Text isTruncated>{pool.name}</Text>
-            <Text isTruncated>{pool.assetClass}</Text>
-            <Text isTruncated>{pool.valueLocked}</Text>
-            <Text isTruncated>{pool.apr}</Text>
+            <Text isTruncated>{pool.campaign_name}</Text>
+            <Text isTruncated>{pool.asset_class}</Text>
+            <Text isTruncated>
+              {pool.campaign_currency}
+              {formatNumberWithCommas(pool.campaign_amount)}
+            </Text>
+            <Text isTruncated>{pool.APR}%</Text>
             <Flex isTruncated alignItems="center">
               <Badge
                 isTruncated
@@ -88,16 +95,17 @@ const PoolsList = ({ pools }) => {
           >
             {/* Ensure the box respects the grid's column width */}
             <Text isTruncated>
-              <b>Name:</b> {pool.name}
+              <b>Name:</b> {pool.campaign_name}
             </Text>
             <Text isTruncated>
-              <b>Asset Class:</b> {pool.assetClass}
+              <b>Asset Class:</b> {pool.asset_class}
             </Text>
             <Text isTruncated>
-              <b>Value Locked:</b> {pool.valueLocked}
+              <b>Value Locked:</b> {pool.campaign_currency}
+              {formatNumberWithCommas(pool.campaign_amount)}
             </Text>
             <Text isTruncated>
-              <b>APR:</b> {pool.apr}
+              <b>APR:</b> {pool.APR}%
             </Text>
             <Flex isTruncated alignItems="center">
               <Badge
