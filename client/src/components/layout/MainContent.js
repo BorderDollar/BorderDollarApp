@@ -1,19 +1,59 @@
-import React from 'react';
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Spinner,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react';
 import PoolsList from '../pools/PoolsList';
-import placeholderPoolData from '../../data/placeholderData'; 
-// You may need additional imports depending on your content
+import { supabase } from '../../api/supabaseClient';
 
 const MainContent = () => {
-  const poolDataArray = Object.values(placeholderPoolData);
+  const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalInvoiceValue, setTotalInvoiceValue] = useState(0);
+
+  useEffect(() => {
+    fetchCampaigns();
+    fetchTotalInvoiceValue();
+  }, []);
+
+  const fetchCampaigns = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from('campaign').select('*');
+    if (error) {
+      console.error('Error fetching campaigns:', error);
+      setError(error);
+    } else {
+      setCampaigns(data);
+    }
+    setLoading(false);
+  };
+
+  const formatNumberWithCommas = number => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const fetchTotalInvoiceValue = async () => {
+    const { data, error } = await supabase.rpc('get_total_invoice_value');
+    if (error) {
+      console.error('Error fetching total invoice value:', error);
+      setError(error);
+      console.log(error);
+    } else {
+      setTotalInvoiceValue(data);
+    }
+  };
 
   return (
     <Flex
-      direction="column" // Stack the content vertically
-      // Adjust the below properties according to your layout
-      // bg="gray.50" // Light gray background
-      minHeight="calc(100vh - 60px)" // Subtract header height from full viewport height
-      transition="margin 0.2s ease-out" // Smooth transition for margin changes
+      direction="column"
+      minHeight="calc(100vh - 60px)"
+      transition="margin 0.2s ease-out"
       gap="24px"
       pt={{ base: '80px', md: '0px' }}
       pb={{ base: '30px', md: '0px' }}
@@ -24,21 +64,24 @@ const MainContent = () => {
         </Heading>
         <Text fontSize="lg">Pools and tokens of real-world assets</Text>
       </Flex>
-      <Box
-        p={5}
-        shadow="md"
-        borderWidth="1px"
-        borderRadius="md"
-        mb={4} // Margin bottom for spacing between content blocks
-      >
-        {/* Content block for Total value locked (TVL) */}
-        <Heading fontSize="lg">Total Invoice Value</Heading>
-        <Text fontSize="3xl" mt={1}>
-          US$151,000
-        </Text>
-        {/* More content blocks go here */}
-      </Box>
-      <PoolsList pools={ poolDataArray } />
+      {loading ? (
+        <Spinner size="xl" />
+      ) : error ? (
+        <Alert status="error">
+          <AlertIcon />
+          {error.message}
+        </Alert>
+      ) : (
+        <>
+          <Box p={5} shadow="md" borderWidth="1px" borderRadius="md" mb={4}>
+            <Heading fontSize="lg">Total Invoice Value</Heading>
+            <Text fontSize="3xl" mt={1}>
+              US${formatNumberWithCommas(totalInvoiceValue)}
+            </Text>
+          </Box>
+          <PoolsList pools={campaigns} />
+        </>
+      )}
     </Flex>
   );
 };
