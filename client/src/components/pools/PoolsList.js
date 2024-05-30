@@ -80,6 +80,8 @@ const PoolsList = ({ pools }) => {
       {/* Pool Items */}
       {pools.map((pool, index) => (
         <Box
+          as={RouterLink}
+          to={`/pools/${pool.campaign_id}`}
           key={index}
           borderWidth="1px"
           borderRadius="md"
