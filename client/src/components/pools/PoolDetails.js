@@ -23,6 +23,9 @@ const PoolDetails = () => {
   const [assetClass, setAssetClass] = useState('');
   const [status, setStatus] = useState('');
   const [APR, setAPR] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [partner_name, setPartnerName] = useState('');
@@ -33,7 +36,9 @@ const PoolDetails = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('campaign')
-      .select('*, partner:partner_id (company_name, logo_url, company_description)')
+      .select(
+        '*, partner:partner_id (company_name, logo_url, company_description)'
+      )
       .eq('campaign_id', poolId)
       .single();
     if (error) {
@@ -46,6 +51,8 @@ const PoolDetails = () => {
       setAssetClass(data.asset_class);
       setStatus(data.status);
       setAPR(data.APR);
+      setStartDate(data.start_date);
+      setEndDate(data.completed_date);
 
       setPartnerName(data.partner.company_name);
       setPartnerLogo(data.partner.logo_url);
@@ -73,6 +80,10 @@ const PoolDetails = () => {
 
   const formatNumberWithCommas = number => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const extractDate = timestamp => {
+    return timestamp.split('T')[0];
   };
 
   return (
@@ -104,7 +115,7 @@ const PoolDetails = () => {
             </Badge>
           </Box>
         </Flex>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
+        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} spacing={6} mb={6}>
           <Box
             textAlign="center"
             p={3}
@@ -170,10 +181,38 @@ const PoolDetails = () => {
             borderRadius="md"
           >
             <Text fontSize="lg" fontWeight="bold">
-              United States Dollar Circle - USDC
+              USDC (Stellar)
             </Text>
             <Text fontSize="md" color="gray.500">
               Investment Token
+            </Text>
+          </Box>
+          <Box
+            textAlign="center"
+            p={3}
+            bg="white"
+            border="1px solid #e2e8f0"
+            borderRadius="md"
+          >
+            <Text fontSize="lg" fontWeight="bold">
+              {extractDate(startDate)}
+            </Text>
+            <Text fontSize="md" color="gray.500">
+              Start Date
+            </Text>
+          </Box>
+          <Box
+            textAlign="center"
+            p={3}
+            bg="white"
+            border="1px solid #e2e8f0"
+            borderRadius="md"
+          >
+            <Text fontSize="lg" fontWeight="bold">
+              {extractDate(endDate)}
+            </Text>
+            <Text fontSize="md" color="gray.500">
+              End Date
             </Text>
           </Box>
         </SimpleGrid>
@@ -190,9 +229,7 @@ const PoolDetails = () => {
             <Text>{partner_name}</Text>{' '}
           </Box>
         </Flex>
-        <Text mb={6}>
-          {partner_desc}
-        </Text>
+        <Text mb={6}>{partner_desc}</Text>
       </Flex>
     </Box>
   );
