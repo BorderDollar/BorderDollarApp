@@ -11,12 +11,17 @@ import {
   Thead,
   Tr,
   Text,
-  HStack,
   Spinner,
   Alert,
   AlertIcon,
   useBreakpointValue,
   Grid,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient';
@@ -25,7 +30,9 @@ import Sidebar from '../../components/layout/Sidebar';
 
 const AdminDashboard = () => {
   const [campaigns, setCampaigns] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [partners, setPartners] = useState([]);
+  const [loadingCampaigns, setLoadingCampaigns] = useState(true);
+  const [loadingPartners, setLoadingPartners] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -33,11 +40,12 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchCampaigns();
+    fetchPartners();
     fetchTotalInvoiceValue();
   }, []);
 
   const fetchCampaigns = async () => {
-    setLoading(true);
+    setLoadingCampaigns(true);
     const { data, error } = await supabase.from('campaign').select('*');
     if (error) {
       console.error('Error fetching campaigns:', error);
@@ -45,10 +53,22 @@ const AdminDashboard = () => {
     } else {
       setCampaigns(data);
     }
-    setLoading(false);
+    setLoadingCampaigns(false);
   };
 
-  const handleDelete = async id => {
+  const fetchPartners = async () => {
+    setLoadingPartners(true);
+    const { data, error } = await supabase.from('partner').select('*');
+    if (error) {
+      console.error('Error fetching partners:', error);
+      setError(error);
+    } else {
+      setPartners(data);
+    }
+    setLoadingPartners(false);
+  };
+
+  const handleDeleteCampaign = async id => {
     const { error } = await supabase
       .from('campaign')
       .delete()
@@ -58,6 +78,19 @@ const AdminDashboard = () => {
       setError(error);
     } else {
       fetchCampaigns();
+    }
+  };
+
+  const handleDeletePartner = async id => {
+    const { error } = await supabase
+      .from('partner')
+      .delete()
+      .eq('partner_id', id);
+    if (error) {
+      console.error('Error deleting partner:', error);
+      setError(error);
+    } else {
+      fetchPartners();
     }
   };
 
@@ -74,6 +107,121 @@ const AdminDashboard = () => {
       setTotalInvoiceValue(data);
     }
   };
+
+  const CampaignsTab = () => (
+    <Flex direction="column" gap="24px">
+      <Flex justify="space-between" align="center" mt={8}>
+        <Heading as="h3" size="lg">
+          Campaigns
+        </Heading>
+        <Button onClick={() => navigate('/admin/create')}>
+          Create Campaign
+        </Button>
+      </Flex>
+
+      {loadingCampaigns ? (
+        <Spinner size="xl" />
+      ) : error ? (
+        <Alert status="error">
+          <AlertIcon />
+          {error.message}
+        </Alert>
+      ) : (
+        <Table variant="simple" mt={4}>
+          <Thead>
+            <Tr>
+              <Th>Campaign Name</Th>
+              <Th>Amount</Th>
+              <Th>Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {campaigns.map(campaign => (
+              <Tr key={campaign.campaign_id}>
+                <Td>{campaign.campaign_name}</Td>
+                <Td>
+                  {campaign.campaign_currency}
+                  {formatNumberWithCommas(campaign.campaign_amount)}
+                </Td>
+                <Td>
+                  <Button
+                    mr={2}
+                    onClick={() =>
+                      navigate(`/admin/edit/${campaign.campaign_id}`)
+                    }
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handleDeleteCampaign(campaign.campaign_id)}
+                  >
+                    Delete
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
+    </Flex>
+  );
+
+  const PartnersTab = () => (
+    <Flex direction="column" gap="24px">
+      <Flex justify="space-between" align="center" mt={8}>
+        <Heading as="h3" size="lg">
+          Partners
+        </Heading>
+        <Button onClick={() => navigate('/admin/create-partner')}>
+          Create Partner
+        </Button>
+      </Flex>
+
+      {loadingPartners ? (
+        <Spinner size="xl" />
+      ) : error ? (
+        <Alert status="error">
+          <AlertIcon />
+          {error.message}
+        </Alert>
+      ) : (
+        <Table variant="simple" mt={4}>
+          <Thead>
+            <Tr>
+              <Th>Partner Name</Th>
+              <Th>Contact</Th>
+              <Th>Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {partners.map(partner => (
+              <Tr key={partner.partner_id}>
+                <Td>{partner.company_name}</Td>
+                <Td>{partner.company_contact}</Td>
+                <Td>
+                  <Button
+                    mr={2}
+                    onClick={() =>
+                      navigate(`/admin/edit-partner/${partner.partner_id}`)
+                    }
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handleDeletePartner(partner.partner_id)}
+                  >
+                    Delete
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
+    </Flex>
+  );
 
   const MainContent = () => (
     <Flex
@@ -97,7 +245,7 @@ const AdminDashboard = () => {
         </Text>
       </Box>
 
-      <HStack spacing={6} w="full">
+      <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} spacing={6} mb={6}>
         <Box
           flex="1"
           p={6}
@@ -150,62 +298,22 @@ const AdminDashboard = () => {
           </Text>
           <Text color="gray.500">Total Interest Earned</Text>
         </Box>
-      </HStack>
+      </SimpleGrid>
 
-      <Flex justify="space-between" align="center" mt={8}>
-        <Heading as="h3" size="lg">
-          Campaigns
-        </Heading>
-        <Button onClick={() => navigate('/admin/create')}>
-          Create Campaign
-        </Button>
-      </Flex>
-
-      {loading ? (
-        <Spinner size="xl" />
-      ) : error ? (
-        <Alert status="error">
-          <AlertIcon />
-          {error.message}
-        </Alert>
-      ) : (
-        <Table variant="simple" mt={4}>
-          <Thead>
-            <Tr>
-              <Th>Campaign Name</Th>
-              <Th>Amount</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {campaigns.map(campaign => (
-              <Tr key={campaign.campaign_id}>
-                <Td>{campaign.campaign_name}</Td>
-                <Td>
-                  {campaign.campaign_currency}
-                  {formatNumberWithCommas(campaign.campaign_amount)}
-                </Td>
-                <Td>
-                  <Button
-                    mr={2}
-                    onClick={() =>
-                      navigate(`/admin/edit/${campaign.campaign_id}`)
-                    }
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => handleDelete(campaign.campaign_id)}
-                  >
-                    Delete
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      )}
+      <Tabs variant="soft-rounded" colorScheme="orange" mt={8}>
+        <TabList>
+          <Tab>Campaigns</Tab>
+          <Tab>Partners</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <CampaignsTab />
+          </TabPanel>
+          <TabPanel>
+            <PartnersTab />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Flex>
   );
 
