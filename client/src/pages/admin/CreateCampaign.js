@@ -15,6 +15,7 @@ import {
   VStack,
   useToast,
   Flex,
+  HStack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient';
@@ -27,7 +28,7 @@ const CreateCampaign = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [APR, setAPR] = useState('');
-  const [assetClass, setAssetClass] = useState('Real Estate');
+  const [assetClass, setAssetClass] = useState('');
   const [partners, setPartners] = useState([]);
   const [selectedPartner, setSelectedPartner] = useState('');
   const toast = useToast();
@@ -51,6 +52,7 @@ const CreateCampaign = () => {
 
   useEffect(() => {
     fetchPartners();
+    window.scrollTo(0, 0); // Scroll to the top when the component mounts
   }, [fetchPartners]);
 
   const handleSubmit = async (e) => {
@@ -86,6 +88,10 @@ const CreateCampaign = () => {
         isClosable: true,
       });
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/admin'); // Navigate back to the admin dashboard
   };
 
   return (
@@ -178,12 +184,12 @@ const CreateCampaign = () => {
 
             <FormControl id="asset-class" isRequired>
               <FormLabel>Asset Class</FormLabel>
-              <Select value={assetClass} onChange={(e) => setAssetClass(e.target.value)}>
-                <option value="Real Estate">Real Estate</option>
-                <option value="Commodities">Commodities</option>
-                <option value="Equities">Equities</option>
-              </Select>
-              <FormHelperText>Select the asset class for the campaign.</FormHelperText>
+              <Input
+                placeholder="Asset Class"
+                value={assetClass}
+                onChange={(e) => setAssetClass(e.target.value)}
+              />
+              <FormHelperText>Enter the asset class for the campaign.</FormHelperText>
             </FormControl>
 
             <FormControl id="partner" isRequired>
@@ -202,9 +208,14 @@ const CreateCampaign = () => {
               <FormHelperText>Select the partner for the campaign.</FormHelperText>
             </FormControl>
 
-            <Button type="submit" colorScheme="blue" size="lg">
-              Create Campaign
-            </Button>
+            <HStack spacing={4}>
+              <Button type="submit" colorScheme="blue" size="lg">
+                Create Campaign
+              </Button>
+              <Button onClick={handleCancel} colorScheme="gray" size="lg">
+                Cancel
+              </Button>
+            </HStack>
           </VStack>
         </Box>
       </Flex>
