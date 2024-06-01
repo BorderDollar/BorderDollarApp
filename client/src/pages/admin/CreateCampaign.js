@@ -55,7 +55,7 @@ const CreateCampaign = () => {
     window.scrollTo(0, 0); // Scroll to the top when the component mounts
   }, [fetchPartners]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const { error } = await supabase.from('campaign').insert([
       {
@@ -113,7 +113,7 @@ const CreateCampaign = () => {
               <Input
                 placeholder="Title"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
               />
               <FormHelperText>Enter the campaign title.</FormHelperText>
             </FormControl>
@@ -122,7 +122,7 @@ const CreateCampaign = () => {
               <FormLabel>Amount</FormLabel>
               <NumberInput
                 value={amount}
-                onChange={(valueString) => setAmount(valueString)}
+                onChange={valueString => setAmount(valueString)}
                 min={0}
               >
                 <NumberInputField />
@@ -131,17 +131,24 @@ const CreateCampaign = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-              <FormHelperText>Enter the funding amount for the campaign.</FormHelperText>
+              <FormHelperText>
+                Enter the funding amount for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <FormControl id="currency" isRequired>
               <FormLabel>Currency</FormLabel>
-              <Select value={currency} onChange={(e) => setCurrency(e.target.value)}>
+              <Select
+                value={currency}
+                onChange={e => setCurrency(e.target.value)}
+              >
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
                 <option value="GBP">GBP</option>
               </Select>
-              <FormHelperText>Select the currency for the campaign.</FormHelperText>
+              <FormHelperText>
+                Select the currency for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <FormControl id="start-date" isRequired>
@@ -149,9 +156,11 @@ const CreateCampaign = () => {
               <Input
                 type="date"
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                onChange={e => setStartDate(e.target.value)}
               />
-              <FormHelperText>Select the start date for the campaign.</FormHelperText>
+              <FormHelperText>
+                Select the start date for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <FormControl id="end-date" isRequired>
@@ -159,16 +168,18 @@ const CreateCampaign = () => {
               <Input
                 type="date"
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                onChange={e => setEndDate(e.target.value)}
               />
-              <FormHelperText>Select the end date for the campaign.</FormHelperText>
+              <FormHelperText>
+                Select the end date for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <FormControl id="apr" isRequired>
               <FormLabel>APR</FormLabel>
               <NumberInput
                 value={APR}
-                onChange={(valueString) => setAPR(valueString)}
+                onChange={valueString => setAPR(valueString)}
                 min={0}
                 max={100}
                 precision={2}
@@ -179,7 +190,9 @@ const CreateCampaign = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-              <FormHelperText>Enter the Annual Percentage Rate (APR) for the campaign.</FormHelperText>
+              <FormHelperText>
+                Enter the Annual Percentage Rate (APR) for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <FormControl id="asset-class" isRequired>
@@ -187,9 +200,11 @@ const CreateCampaign = () => {
               <Input
                 placeholder="Asset Class"
                 value={assetClass}
-                onChange={(e) => setAssetClass(e.target.value)}
+                onChange={e => setAssetClass(e.target.value)}
               />
-              <FormHelperText>Enter the asset class for the campaign.</FormHelperText>
+              <FormHelperText>
+                Enter the asset class for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <FormControl id="partner" isRequired>
@@ -197,15 +212,17 @@ const CreateCampaign = () => {
               <Select
                 placeholder="Select Partner"
                 value={selectedPartner}
-                onChange={(e) => setSelectedPartner(e.target.value)}
+                onChange={e => setSelectedPartner(e.target.value)}
               >
-                {partners.map((partner) => (
+                {partners.map(partner => (
                   <option key={partner.partner_id} value={partner.partner_id}>
                     {partner.company_name}
                   </option>
                 ))}
               </Select>
-              <FormHelperText>Select the partner for the campaign.</FormHelperText>
+              <FormHelperText>
+                Select the partner for the campaign.
+              </FormHelperText>
             </FormControl>
 
             <HStack spacing={4}>
