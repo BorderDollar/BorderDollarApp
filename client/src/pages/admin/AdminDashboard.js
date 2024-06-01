@@ -156,20 +156,37 @@ const AdminDashboard = () => {
                   {formatNumberWithCommas(campaign.campaign_amount)}
                 </Td>
                 <Td>
-                  <Button
-                    mr={2}
-                    onClick={() =>
-                      navigate(`/admin/edit/${campaign.campaign_id}`)
-                    }
+                  <Flex
+                    direction={isMobile ? 'column' : 'row'}
+                    spacing={isMobile ? 2 : 0}
                   >
-                    Edit
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => confirmDelete(campaign.campaign_id, true)}
-                  >
-                    Delete
-                  </Button>
+                    <Button
+                      size={isMobile ? 'sm' : 'md'}
+                      mr={isMobile ? 0 : 2}
+                      mb={isMobile ? 2 : 0}
+                      onClick={() =>
+                        navigate(`/admin/edit/${campaign.campaign_id}`)
+                      }
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size={isMobile ? 'sm' : 'md'}
+                      mr={isMobile ? 0 : 2}
+                      mb={isMobile ? 2 : 0}
+                      colorScheme="orange"
+                      onClick={() => console.log('Deploy')}
+                    >
+                      Deploy
+                    </Button>
+                    <Button
+                      size={isMobile ? 'sm' : 'md'}
+                      colorScheme="red"
+                      onClick={() => confirmDelete(campaign.campaign_id, true)}
+                    >
+                      Delete
+                    </Button>
+                  </Flex>
                 </Td>
               </Tr>
             ))}
@@ -212,20 +229,28 @@ const AdminDashboard = () => {
                 <Td>{partner.company_name}</Td>
                 <Td>{partner.company_contact}</Td>
                 <Td>
-                  <Button
-                    mr={2}
-                    onClick={() =>
-                      navigate(`/admin/edit-partner/${partner.partner_id}`)
-                    }
+                  <Flex
+                    direction={isMobile ? 'column' : 'row'}
+                    spacing={isMobile ? 2 : 0}
                   >
-                    Edit
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => confirmDelete(partner.partner_id, false)}
-                  >
-                    Delete
-                  </Button>
+                    <Button
+                      size={isMobile ? 'sm' : 'md'}
+                      mr={isMobile ? 0 : 2}
+                      mb={isMobile ? 2 : 0}
+                      onClick={() =>
+                        navigate(`/admin/edit-partner/${partner.partner_id}`)
+                      }
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size={isMobile ? 'sm' : 'md'}
+                      colorScheme="red"
+                      onClick={() => confirmDelete(partner.partner_id, false)}
+                    >
+                      Delete
+                    </Button>
+                  </Flex>
                 </Td>
               </Tr>
             ))}
