@@ -22,6 +22,12 @@ import {
   Tab,
   TabPanel,
   SimpleGrid,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient';
@@ -34,6 +40,11 @@ const AdminDashboard = () => {
   const [loadingCampaigns, setLoadingCampaigns] = useState(true);
   const [loadingPartners, setLoadingPartners] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isDeleteCampaign, setIsDeleteCampaign] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
   const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [totalInvoiceValue, setTotalInvoiceValue] = useState(0);
@@ -68,30 +79,31 @@ const AdminDashboard = () => {
     setLoadingPartners(false);
   };
 
-  const handleDeleteCampaign = async id => {
-    const { error } = await supabase
-      .from('campaign')
-      .delete()
-      .eq('campaign_id', id);
-    if (error) {
-      console.error('Error deleting campaign:', error);
-      setError(error);
-    } else {
-      fetchCampaigns();
-    }
+  const confirmDelete = (id, isCampaign) => {
+    setSelectedItem(id);
+    setIsDeleteCampaign(isCampaign);
+    setIsOpen(true);
   };
 
-  const handleDeletePartner = async id => {
+  const handleDelete = async () => {
+    const table = isDeleteCampaign ? 'campaign' : 'partner';
+    const idField = isDeleteCampaign ? 'campaign_id' : 'partner_id';
     const { error } = await supabase
-      .from('partner')
+      .from(table)
       .delete()
-      .eq('partner_id', id);
+      .eq(idField, selectedItem);
     if (error) {
-      console.error('Error deleting partner:', error);
+      console.error(
+        `Error deleting ${isDeleteCampaign ? 'campaign' : 'partner'}:`,
+        error
+      );
       setError(error);
     } else {
-      fetchPartners();
+      isDeleteCampaign ? fetchCampaigns() : fetchPartners();
+      fetchTotalInvoiceValue(); // Refresh total invoice value after deletion
     }
+    setIsOpen(false);
+    setSelectedItem(null);
   };
 
   const formatNumberWithCommas = number => {
@@ -154,7 +166,7 @@ const AdminDashboard = () => {
                   </Button>
                   <Button
                     colorScheme="red"
-                    onClick={() => handleDeleteCampaign(campaign.campaign_id)}
+                    onClick={() => confirmDelete(campaign.campaign_id, true)}
                   >
                     Delete
                   </Button>
@@ -210,7 +222,7 @@ const AdminDashboard = () => {
                   </Button>
                   <Button
                     colorScheme="red"
-                    onClick={() => handleDeletePartner(partner.partner_id)}
+                    onClick={() => confirmDelete(partner.partner_id, false)}
                   >
                     Delete
                   </Button>
@@ -317,30 +329,64 @@ const AdminDashboard = () => {
     </Flex>
   );
 
-  return isMobile ? (
-    <Flex direction="column" h="100vh">
-      <Box>
-        <Header />
-      </Box>
-      <Box flex="1" p={4}>
-        <MainContent />
-      </Box>
-      <Box p={4}>
-        <Sidebar />
-      </Box>
-    </Flex>
-  ) : (
-    <Grid templateColumns="220px 1fr" templateRows="60px 1fr" h="100vh">
-      <Box gridRow="1 / 3" gridColumn="1">
-        <Sidebar />
-      </Box>
-      <Box gridRow="1" gridColumn="2">
-        <Header />
-      </Box>
-      <Box gridRow="2" gridColumn="2" px={{ base: '16px', md: '24px' }} pb={2}>
-        <MainContent />
-      </Box>
-    </Grid>
+  return (
+    <>
+      {isMobile ? (
+        <Flex direction="column" h="100vh">
+          <Box>
+            <Header />
+          </Box>
+          <Box flex="1" p={4}>
+            <MainContent />
+          </Box>
+          <Box p={4}>
+            <Sidebar />
+          </Box>
+        </Flex>
+      ) : (
+        <Grid templateColumns="220px 1fr" templateRows="60px 1fr" h="100vh">
+          <Box gridRow="1 / 3" gridColumn="1">
+            <Sidebar />
+          </Box>
+          <Box gridRow="1" gridColumn="2">
+            <Header />
+          </Box>
+          <Box
+            gridRow="2"
+            gridColumn="2"
+            px={{ base: '16px', md: '24px' }}
+            pb={2}
+          >
+            <MainContent />
+          </Box>
+        </Grid>
+      )}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Confirm Delete
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Are you sure you want to delete this{' '}
+              {isDeleteCampaign ? 'campaign' : 'partner'}?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 };
 
