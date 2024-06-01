@@ -67,6 +67,7 @@ const CreateCampaign = () => {
         APR,
         asset_class: assetClass,
         partner_id: selectedPartner,
+        status: 'In Draft',
       },
     ]);
     if (error) {
