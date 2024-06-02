@@ -145,6 +145,8 @@ const AdminDashboard = () => {
               <Tr>
                 <Th>Campaign Name</Th>
                 <Th>Amount</Th>
+                <Th>Status</Th>
+                <Th>Start Date</Th>
                 <Th>Actions</Th>
               </Tr>
             </Thead>
@@ -156,6 +158,8 @@ const AdminDashboard = () => {
                     {campaign.campaign_currency}
                     {formatNumberWithCommas(campaign.campaign_amount)}
                   </Td>
+                  <Td>{campaign.status}</Td>
+                  <Td>{campaign.start_date.split('T')[0]}</Td>
                   <Td>
                     <Flex
                       direction={isMobile ? 'column' : 'row'}
