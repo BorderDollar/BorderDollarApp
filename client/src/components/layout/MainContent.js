@@ -24,7 +24,7 @@ const MainContent = () => {
 
   const fetchCampaigns = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('campaign').select('*');
+    const { data, error } = await supabase.from('campaign').select('*').eq('status', 'Open for Investments');
     if (error) {
       console.error('Error fetching campaigns:', error);
       setError(error);
