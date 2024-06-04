@@ -7,6 +7,7 @@ import PoolDetailPage from './pages/PoolDetailPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CreateCampaign from './pages/admin/CreateCampaign';
 import EditCampaign from './pages/admin/EditCampaign';
+import DeployCampaign from './pages/admin/DeployCampaign';
 import {
   BrowserRouter as Router,
   Routes,
@@ -68,6 +69,14 @@ function App() {
               element={
                 <RequireAuth>
                   <EditCampaign />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/deploy/:id"
+              element={
+                <RequireAuth>
+                  <DeployCampaign />
                 </RequireAuth>
               }
             />
