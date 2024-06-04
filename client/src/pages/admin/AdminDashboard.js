@@ -179,10 +179,18 @@ const AdminDashboard = () => {
                         size={isMobile ? 'sm' : 'md'}
                         mr={isMobile ? 0 : 2}
                         mb={isMobile ? 2 : 0}
-                        colorScheme="orange"
-                        onClick={() => console.log('Deploy')}
+                        colorScheme={
+                          campaign.status === 'Open for Investments'
+                            ? 'orange'
+                            : 'blue'
+                        }
+                        onClick={() =>
+                          navigate(`/admin/deploy/${campaign.campaign_id}`)
+                        }
                       >
-                        Deploy
+                        {campaign.status === 'Open for Investments'
+                          ? 'Deployed'
+                          : 'Deploy'}
                       </Button>
                       <Button
                         size={isMobile ? 'sm' : 'md'}
