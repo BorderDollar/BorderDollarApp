@@ -159,7 +159,7 @@ How to use this contract to run a crowdfund
 #[contractimpl]
 #[allow(clippy::needless_pass_by_value)]
 impl Crowdfund {
-    pub fn initialize(
+    pub fn init(
         e: Env,
         recipient: Address,
         deadline: u64,
