@@ -1110,7 +1110,7 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000006"
               },
               {
-                "symbol": "initialize"
+                "symbol": "init"
               }
             ],
             "data": {
@@ -1149,7 +1149,7 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "initialize"
+                "symbol": "init"
               }
             ],
             "data": "void"
