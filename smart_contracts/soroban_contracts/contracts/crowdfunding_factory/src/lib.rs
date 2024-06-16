@@ -19,9 +19,6 @@ impl Deployer {
         deployer: Address,
         wasm_hash: BytesN<32>,
         salt: BytesN<32>,
-        // init_fn: Symbol,
-        // init_args: Vec<Val>
-    // ) -> (Address, Val) {
     ) -> Address {
         // Skip authorization if deployer is the current contract.
         if deployer != env.current_contract_address() {
@@ -34,11 +31,7 @@ impl Deployer {
             .with_address(deployer, salt)
             .deploy(wasm_hash);
 
-        // Invoke the init function with the given arguments.
-        // let res: Val = env.invoke_contract(&deployed_address, &init_fn, init_args);
-        // Return the contract ID of the deployed contract and the result of
-        // invoking the init result.
-        // (deployed_address, res)
+        // Return the contract ID of the deployed contract
         deployed_address
     }
 }
