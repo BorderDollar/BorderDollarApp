@@ -10,16 +10,17 @@ import {
   Flex,
   HStack,
   Heading,
-  Image,
   Text,
   FormControl,
   FormLabel,
   FormHelperText,
+  Image,
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient';
 import AdminLayout from '../../components/layout/AdminLayout';
 import formatNumberWithCommas from '../../utils/formatNumberWithCommas';
+import sorobanContractDeploy from '../../smartContractUtils/soroban/sorobanContractDeploy';
 
 const DeployCampaign = () => {
   const { id } = useParams();
@@ -75,6 +76,36 @@ const DeployCampaign = () => {
       });
       return;
     }
+
+    if (selectedProtocol === 'Stellar') {
+      try {
+        const deployer = process.env.REACT_APP_SOROBAN_BORDERDOLLAR_PUBLIC_KEY;
+        const wasmHash =
+          process.env.REACT_APP_SOROBAN_CROWDFUNDING_SMART_CONTRACT_HASH;
+        const newContract = await sorobanContractDeploy(deployer, wasmHash);
+
+        console.log('New contract code is', newContract);
+
+        toast({
+          title: 'Success',
+          description: 'Smart contract deployed successfully.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      } catch (error) {
+        console.error('Error deploying smart contract:', error);
+        toast({
+          title: 'Error',
+          description: 'There was an error deploying the smart contract.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
+
     const { error } = await supabase
       .from('campaign')
       .update({
@@ -150,7 +181,8 @@ const DeployCampaign = () => {
           <VStack spacing={4} align="flex-start">
             <Text fontSize="lg">Title: {title}</Text>
             <Text fontSize="lg">
-              Amount: {currency}{formatNumberWithCommas(amount)}
+              Amount: {currency}
+              {formatNumberWithCommas(amount)}
             </Text>
             <Text fontSize="lg">Start Date: {startDate}</Text>
             <Text fontSize="lg">End Date: {endDate}</Text>
