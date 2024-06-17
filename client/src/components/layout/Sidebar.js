@@ -17,6 +17,7 @@ import {
   FaSignOutAlt,
 } from 'react-icons/fa';
 import { supabase } from '../../api/supabaseClient';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -61,6 +62,8 @@ const Sidebar = () => {
         <Box as={isMobile ? HStack : VStack} spacing={4} pt={isMobile ? 0 : 6}>
           {/* Dashboard Button */}
           <Button
+            as={Link}
+            to="/pools"
             leftIcon={<FaTachometerAlt />}
             variant="ghost"
             justifyContent="flex-start"
