@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -13,20 +13,12 @@ import {
   Flex,
   Image,
 } from '@chakra-ui/react';
-import { requestAccess } from '@stellar/freighter-api';
+import { connectWallet } from '../../utils/walletUtils';
 
-const ConnectModal = ({ isOpen, onClose }) => {
-  const [walletType, setWalletType] = useState('');
-
-  const handleConnect = async wallet => {
+const ConnectModal = ({ isOpen, onClose, setWalletAddress }) => {
+  const handleConnect = async (wallet) => {
     try {
-      let publicKey = '';
-      if (wallet === 'freighter') {
-        publicKey = await requestAccess();
-      }
-      // Add other wallet connection logic here
-      console.log('Connected with public key:', publicKey);
-      setWalletType(wallet);
+      await connectWallet(wallet, setWalletAddress);
       onClose();
     } catch (error) {
       console.error('Connection failed:', error);
