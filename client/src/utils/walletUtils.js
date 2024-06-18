@@ -4,7 +4,7 @@ import { requestAccess } from '@stellar/freighter-api';
 export const connectWallet = async (walletType, setWalletAddress) => {
   try {
     let publicKey = '';
-    if (walletType === 'freighter') {
+    if (walletType === 'Freighter') {
       publicKey = await requestAccess();
       setWalletAddress(publicKey);
       localStorage.setItem('walletAddress', publicKey);
@@ -22,7 +22,7 @@ export const connectWallet = async (walletType, setWalletAddress) => {
 export const disconnectWallet = (walletType, setWalletAddress) => {
   setWalletAddress('');
   localStorage.removeItem('walletAddress');
-  if (walletType === 'freighter' && window.freighterApi) {
+  if (walletType === 'Freighter' && window.freighterApi) {
     window.freighterApi.signOut();
   }
   // Add other wallet disconnection logic here
@@ -30,4 +30,24 @@ export const disconnectWallet = (walletType, setWalletAddress) => {
 };
 
 export const shortenAddress = (address, length) =>
-    `${address.slice(0, length)}...${address.slice(-length)}`;
+  `${address.slice(0, length)}...${address.slice(-length)}`;
+
+// Function to generate a random color based on the wallet address
+export const getAvatarColor = walletAddress => {
+  const colors = [
+    'red.500',
+    'green.500',
+    'blue.500',
+    'purple.500',
+    'orange.500',
+    'teal.500',
+    'pink.500',
+    'cyan.500',
+    'yellow.500',
+    'gray.500',
+  ];
+  const hash = walletAddress
+    .split('')
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[hash % colors.length];
+};
