@@ -17,27 +17,61 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import ConnectModal from './ConnectModal';
-import { disconnectWallet, shortenAddress } from '../../utils/walletUtils';
+import {
+  disconnectWallet,
+  getAvatarColor,
+  shortenAddress,
+} from '../../utils/walletUtils';
+import { getXlmBalance } from '../../utils/stellarUtils';
+import { formatNumberWithTwoDecimalPlaces } from '../../utils/formatNumber';
 
 const Header = () => {
   const [walletAddress, setWalletAddress] = useState('');
+  const [network, setNetwork] = useState('');
+  const [walletType, setWalletType] = useState('');
+  const [xlmBalance, setXlmBalance] = useState('');
   const logoPath = '/BorderDollarFullLogo.jpeg'; // Replace with the actual path to your logo
   const headerHeight = useBreakpointValue({ base: '60px', md: '60px' }); // Consistent height on all screens
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    // Check if there's a wallet address saved in localStorage
+    // Check if there are values saved in localStorage
     const savedAddress = localStorage.getItem('walletAddress');
+    const savedNetwork = localStorage.getItem('network');
+    const savedWalletType = localStorage.getItem('walletType');
+
     if (savedAddress) {
       setWalletAddress(savedAddress);
+      getXlmBalance(savedAddress).then(balance => setXlmBalance(balance));
+    }
+
+    if (savedNetwork) {
+      setNetwork(savedNetwork);
+    }
+
+    if (savedWalletType) {
+      setWalletType(savedWalletType);
     }
   }, []);
+
+  useEffect(() => {
+    if (walletAddress) {
+      getXlmBalance(walletAddress).then(balance => setXlmBalance(balance));
+    }
+  }, [walletAddress]);
 
   const buttonWidth = useBreakpointValue({ base: '196px', md: '262px' });
   const buttonHeight = '31px';
 
   const handleDisconnect = () => {
-    disconnectWallet('freighter', setWalletAddress);
+    disconnectWallet(walletType, setWalletAddress);
+    setNetwork('');
+    setWalletType('');
+    setXlmBalance('');
+    // Remove from localStorage
+    localStorage.removeItem('walletAddress');
+    localStorage.removeItem('network');
+    localStorage.removeItem('walletType');
   };
 
   return (
@@ -79,30 +113,32 @@ const Header = () => {
               <HStack spacing={2} align="center">
                 <Avatar
                   size="xs"
-                  name="Profile Icon"
-                  src="/path/to/profile/icon.png"
-                />{' '}
-                {/* Replace with the actual path to your profile icon */}
+                  name={shortenAddress(walletAddress, 1)}
+                  bg={getAvatarColor(walletAddress)}
+                />
                 <Text fontSize="sm" align="center">
                   {shortenAddress(walletAddress, 4)}
+                </Text>
+                <Text fontSize="sm" align="center">
+                  {formatNumberWithTwoDecimalPlaces(xlmBalance)} XLM
                 </Text>
               </HStack>
             </MenuButton>
             <MenuList color="black">
               <Box p={4}>
-                <Text fontWeight="bold">{shortenAddress(walletAddress, 4)}</Text>
-                <Text fontSize="sm">0.07 ETH</Text>{' '}
-                {/* Replace with actual balance */}
+                <Text fontWeight="bold">
+                  {shortenAddress(walletAddress, 4)}
+                </Text>
+                <Text fontSize="sm">{xlmBalance} XLM</Text>
               </Box>
               <MenuItem>
                 <Text>Verify identity</Text>
               </MenuItem>
               <MenuItem>
-                <Text>Network: Ethereum</Text>
+                <Text>Network: {network}</Text>
               </MenuItem>
               <MenuItem>
-                <Text>Wallet: Freighter</Text>{' '}
-                {/* Replace with actual wallet */}
+                <Text>Wallet: {walletType}</Text>
               </MenuItem>
               <MenuItem onClick={handleDisconnect}>
                 <Text>Disconnect</Text>
@@ -128,6 +164,8 @@ const Header = () => {
         isOpen={isOpen}
         onClose={onClose}
         setWalletAddress={setWalletAddress}
+        setNetwork={setNetwork}
+        setWalletType={setWalletType}
       />
     </>
   );
