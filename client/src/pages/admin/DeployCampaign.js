@@ -77,12 +77,14 @@ const DeployCampaign = () => {
       return;
     }
 
+    let newContract = null;
+
     if (selectedProtocol === 'Stellar') {
       try {
         const deployer = process.env.REACT_APP_SOROBAN_BORDERDOLLAR_PUBLIC_KEY;
         const wasmHash =
           process.env.REACT_APP_SOROBAN_CROWDFUNDING_SMART_CONTRACT_HASH;
-        const newContract = await sorobanContractDeploy(deployer, wasmHash);
+        newContract = await sorobanContractDeploy(deployer, wasmHash);
 
         console.log('New contract code is', newContract);
 
@@ -109,8 +111,9 @@ const DeployCampaign = () => {
     const { error } = await supabase
       .from('campaign')
       .update({
-        status: 'Deployed',
+        status: 'Open for Investments',
         protocol: selectedProtocol,
+        smart_contract: newContract,
       })
       .eq('campaign_id', id);
     if (error) {
