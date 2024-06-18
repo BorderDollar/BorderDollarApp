@@ -15,11 +15,21 @@ import {
 } from '@chakra-ui/react';
 import { connectWallet } from '../../utils/walletUtils';
 
-const ConnectModal = ({ isOpen, onClose, setWalletAddress }) => {
-  const handleConnect = async (wallet) => {
+const ConnectModal = ({
+  isOpen,
+  onClose,
+  setWalletAddress,
+  setNetwork,
+  setWalletType,
+}) => {
+  const handleConnect = async wallet => {
     try {
       await connectWallet(wallet, setWalletAddress);
-      onClose();
+      setWalletType(wallet);
+      setNetwork('Stellar'); // Update with the actual network
+      localStorage.setItem('walletType', wallet);
+      localStorage.setItem('network', 'Stellar');
+      onClose(); // Close the modal after setting the state and localStorage
     } catch (error) {
       console.error('Connection failed:', error);
     }
@@ -38,7 +48,7 @@ const ConnectModal = ({ isOpen, onClose, setWalletAddress }) => {
           <Stack spacing={4}>
             <Box
               as="button"
-              onClick={() => handleConnect('freighter')}
+              onClick={() => handleConnect('Freighter')}
               border="1px"
               borderColor="gray.200"
               borderRadius="lg"
@@ -60,6 +70,7 @@ const ConnectModal = ({ isOpen, onClose, setWalletAddress }) => {
                 </Text>
               </Flex>
             </Box>
+            {/* Add other wallets here */}
           </Stack>
         </ModalBody>
         <ModalFooter justifyContent="center">
