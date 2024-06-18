@@ -19,7 +19,7 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient';
 import AdminLayout from '../../components/layout/AdminLayout';
-import formatNumberWithCommas from '../../utils/formatNumberWithCommas';
+import { formatNumberWithCommas } from '../../utils/formatNumber';
 import sorobanContractDeploy from '../../smartContractUtils/soroban/sorobanContractDeploy';
 
 const DeployCampaign = () => {
