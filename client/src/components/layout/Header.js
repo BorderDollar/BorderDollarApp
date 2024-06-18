@@ -22,14 +22,14 @@ import {
   getAvatarColor,
   shortenAddress,
 } from '../../utils/walletUtils';
-import { getXlmBalance } from '../../utils/stellarUtils';
+import { getUsdcBalance } from '../../utils/stellarUtils';
 import { formatNumberWithTwoDecimalPlaces } from '../../utils/formatNumber';
 
 const Header = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [network, setNetwork] = useState('');
   const [walletType, setWalletType] = useState('');
-  const [xlmBalance, setXlmBalance] = useState('');
+  const [usdcBalance, setUSDCBalance] = useState('');
   const logoPath = '/BorderDollarFullLogo.jpeg'; // Replace with the actual path to your logo
   const headerHeight = useBreakpointValue({ base: '60px', md: '60px' }); // Consistent height on all screens
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,7 +42,7 @@ const Header = () => {
 
     if (savedAddress) {
       setWalletAddress(savedAddress);
-      getXlmBalance(savedAddress).then(balance => setXlmBalance(balance));
+      getUsdcBalance(savedAddress).then(balance => setUSDCBalance(balance));
     }
 
     if (savedNetwork) {
@@ -56,7 +56,7 @@ const Header = () => {
 
   useEffect(() => {
     if (walletAddress) {
-      getXlmBalance(walletAddress).then(balance => setXlmBalance(balance));
+      getUsdcBalance(walletAddress).then(balance => setUSDCBalance(balance));
     }
   }, [walletAddress]);
 
@@ -67,7 +67,7 @@ const Header = () => {
     disconnectWallet(walletType, setWalletAddress);
     setNetwork('');
     setWalletType('');
-    setXlmBalance('');
+    setUSDCBalance('');
     // Remove from localStorage
     localStorage.removeItem('walletAddress');
     localStorage.removeItem('network');
@@ -120,7 +120,7 @@ const Header = () => {
                   {shortenAddress(walletAddress, 4)}
                 </Text>
                 <Text fontSize="sm" align="center">
-                  {formatNumberWithTwoDecimalPlaces(xlmBalance)} XLM
+                  {formatNumberWithTwoDecimalPlaces(usdcBalance)} USDC
                 </Text>
               </HStack>
             </MenuButton>
@@ -129,7 +129,7 @@ const Header = () => {
                 <Text fontWeight="bold">
                   {shortenAddress(walletAddress, 4)}
                 </Text>
-                <Text fontSize="sm">{xlmBalance} XLM</Text>
+                <Text fontSize="sm">{usdcBalance} USDC</Text>
               </Box>
               <MenuItem>
                 <Text>Verify identity</Text>
