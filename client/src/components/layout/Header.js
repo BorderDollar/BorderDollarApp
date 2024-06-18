@@ -30,7 +30,10 @@ const Header = () => {
   const [network, setNetwork] = useState('');
   const [walletType, setWalletType] = useState('');
   const [usdcBalance, setUSDCBalance] = useState('');
-  const logoPath = '/BorderDollarFullLogo.jpeg'; // Replace with the actual path to your logo
+  const logoPath = useBreakpointValue({
+    base: '/BorderDollarLogo.png', // Replace with the actual path to your mobile logo
+    md: '/BorderDollarFullLogo.jpeg', // Replace with the actual path to your desktop logo
+  });
   const headerHeight = useBreakpointValue({ base: '60px', md: '60px' }); // Consistent height on all screens
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -60,7 +63,7 @@ const Header = () => {
     }
   }, [walletAddress]);
 
-  const buttonWidth = useBreakpointValue({ base: '196px', md: '262px' });
+  const buttonWidth = useBreakpointValue({ base: '262px', md: '262px' });
   const buttonHeight = '31px';
 
   const handleDisconnect = () => {
