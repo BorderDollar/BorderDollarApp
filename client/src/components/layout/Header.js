@@ -21,6 +21,7 @@ import {
   disconnectWallet,
   getAvatarColor,
   shortenAddress,
+  connectWallet,
 } from '../../utils/walletUtils';
 import { getUsdcBalance } from '../../utils/stellarUtils';
 import { formatNumberWithTwoDecimalPlaces } from '../../utils/formatNumber';
@@ -31,14 +32,13 @@ const Header = () => {
   const [walletType, setWalletType] = useState('');
   const [usdcBalance, setUSDCBalance] = useState('');
   const logoPath = useBreakpointValue({
-    base: '/BorderDollarLogo.png', // Replace with the actual path to your mobile logo
-    md: '/BorderDollarFullLogo.jpeg', // Replace with the actual path to your desktop logo
+    base: '/BorderDollarLogo.png',
+    md: '/BorderDollarFullLogo.jpeg',
   });
-  const headerHeight = useBreakpointValue({ base: '60px', md: '60px' }); // Consistent height on all screens
+  const headerHeight = useBreakpointValue({ base: '60px', md: '60px' });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    // Check if there are values saved in localStorage
     const savedAddress = localStorage.getItem('walletAddress');
     const savedNetwork = localStorage.getItem('network');
     const savedWalletType = localStorage.getItem('walletType');
@@ -71,10 +71,25 @@ const Header = () => {
     setNetwork('');
     setWalletType('');
     setUSDCBalance('');
-    // Remove from localStorage
     localStorage.removeItem('walletAddress');
     localStorage.removeItem('network');
     localStorage.removeItem('walletType');
+  };
+
+  const handleModalClose = async () => {
+    onClose();
+    const savedWalletType = localStorage.getItem('walletType');
+    if (savedWalletType) {
+      try {
+        await connectWallet(savedWalletType, setWalletAddress);
+        setWalletType(savedWalletType);
+        setNetwork('Stellar');
+        localStorage.setItem('walletType', savedWalletType);
+        localStorage.setItem('network', 'Stellar');
+      } catch (error) {
+        console.error('Connection failed:', error);
+      }
+    }
   };
 
   return (
@@ -165,7 +180,7 @@ const Header = () => {
 
       <ConnectModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleModalClose}
         setWalletAddress={setWalletAddress}
         setNetwork={setNetwork}
         setWalletType={setWalletType}
