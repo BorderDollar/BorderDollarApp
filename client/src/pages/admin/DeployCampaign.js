@@ -19,8 +19,12 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient';
 import AdminLayout from '../../components/layout/AdminLayout';
-import { formatNumberWithCommas } from '../../utils/formatNumber';
+import {
+  formatNumberWithCommas,
+  formatDateIntoUnix,
+} from '../../utils/formatNumber';
 import sorobanContractDeploy from '../../smartContractUtils/soroban/sorobanContractDeploy';
+import sorobanContractInitialize from '../../smartContractUtils/soroban/sorobanContractInitialize';
 
 const DeployCampaign = () => {
   const { id } = useParams();
@@ -87,6 +91,14 @@ const DeployCampaign = () => {
         newContract = await sorobanContractDeploy(deployer, wasmHash);
 
         console.log('New contract code is', newContract);
+        
+        await sorobanContractInitialize(
+          newContract,
+          'GDQHOBHPYLFZBZNKQ5CSJHZC2KIULEYLGUZI2MZ6LTSDUEOGK5VIDAZO',
+          formatDateIntoUnix(endDate),
+          amount.toString(),
+          'GDQHOBHPYLFZBZNKQ5CSJHZC2KIULEYLGUZI2MZ6LTSDUEOGK5VIDAZO'
+        );
 
         toast({
           title: 'Success',
