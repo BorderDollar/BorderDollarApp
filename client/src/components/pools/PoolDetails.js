@@ -35,6 +35,7 @@ const PoolDetails = () => {
   const [APR, setAPR] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [smartContract, setSmartContract] = useState('')
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -68,6 +69,7 @@ const PoolDetails = () => {
       setAPR(data.APR);
       setStartDate(data.start_date);
       setEndDate(data.completed_date);
+      setSmartContract(data.smart_contract);
 
       setPartnerName(data.partner.company_name);
       setPartnerLogo(data.partner.logo_url);
@@ -162,6 +164,7 @@ const PoolDetails = () => {
     APR,
     startDate,
     endDate,
+    smartContract
   };
 
   return (
