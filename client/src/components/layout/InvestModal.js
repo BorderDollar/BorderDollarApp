@@ -15,25 +15,42 @@ import {
   Box,
   VStack,
 } from '@chakra-ui/react';
+import { sendUSDCToContract } from '../../utils/stellarUtils';
+import { connectWallet } from '../../utils/walletUtils';
 
 const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
   const [investmentAmount, setInvestmentAmount] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
 
-  const handleInvestmentChange = (e) => setInvestmentAmount(e.target.value);
+  const handleInvestmentChange = e => setInvestmentAmount(e.target.value);
 
-  const formatNumberWithCommas = (number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
-  const extractDate = (timestamp) => {
-    return timestamp.split('T')[0];
+  const handleInvest = async () => {
+    try {
+      if (!walletAddress) {
+        await connectWallet('Freighter', setWalletAddress);
+      }
+      await sendUSDCToContract(campaignDetails.smartContract, investmentAmount);
+      onClose();
+    } catch (error) {
+      console.error('Investment failed:', error);
+    }
   };
 
   useEffect(() => {
     if (!isOpen) {
       setInvestmentAmount('');
+    } else {
+      const storedWalletAddress = localStorage.getItem('walletAddress');
+      if (storedWalletAddress) {
+        setWalletAddress(storedWalletAddress);
+      }
     }
   }, [isOpen]);
+
+  const formatNumberWithCommas = number =>
+    number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  const extractDate = timestamp => timestamp.split('T')[0];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -54,7 +71,9 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
               />
             </FormControl>
             <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.50">
-              <Text fontWeight="bold" mb={2}>Campaign Details</Text>
+              <Text fontWeight="bold" mb={2}>
+                Campaign Details
+              </Text>
               <Text>Campaign Name: {campaignDetails.title}</Text>
               <Text>
                 Total Pool Value: {campaignDetails.currency}{' '}
@@ -68,7 +87,7 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} size="lg" onClick={onClose}>
+          <Button colorScheme="blue" mr={3} size="lg" onClick={handleInvest}>
             Invest
           </Button>
           <Button variant="ghost" size="lg" onClick={onClose}>
