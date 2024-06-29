@@ -1571,7 +1571,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1899,7 +1899,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1974,7 +1974,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "target_reached"
+                "symbol": "fundraise_target_reached"
               }
             ],
             "data": {
@@ -2303,7 +2303,7 @@
             "data": {
               "vec": [
                 {
-                  "string": "caught panic 'sale was successful, recipient has withdrawn funds already' from contract function 'Symbol(withdraw)'"
+                  "string": "caught panic 'Campaign was successful, fundraiser has withdrawn funds already' from contract function 'Symbol(withdraw)'"
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"

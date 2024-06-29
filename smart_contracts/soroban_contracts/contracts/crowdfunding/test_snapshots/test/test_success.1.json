@@ -1577,7 +1577,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1905,7 +1905,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1980,7 +1980,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "target_reached"
+                "symbol": "fundraise_target_reached"
               }
             ],
             "data": {

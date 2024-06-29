@@ -136,24 +136,24 @@ fn test_events() {
             &setup.env,
             (
                 setup.crowdfund_id.clone(),
-                (Symbol::new(&setup.env, "pledged_amount_changed"),).into_val(&setup.env),
+                (Symbol::new(&setup.env, "contributed_amount_changed"),).into_val(&setup.env),
                 10_i128.into_val(&setup.env)
             ),
             (
                 setup.crowdfund_id.clone(),
-                (Symbol::new(&setup.env, "pledged_amount_changed"),).into_val(&setup.env),
+                (Symbol::new(&setup.env, "contributed_amount_changed"),).into_val(&setup.env),
                 15_i128.into_val(&setup.env)
             ),
             (
                 // validate that this event only emitted once, ensuing deposits over the
                 // target before expiration, don't trigger this one again
                 setup.crowdfund_id.clone(),
-                (Symbol::new(&setup.env, "target_reached"),).into_val(&setup.env),
+                (Symbol::new(&setup.env, "fundraise_target_reached"),).into_val(&setup.env),
                 (15_i128, 15_i128).into_val(&setup.env)
             ),
             (
                 setup.crowdfund_id.clone(),
-                (Symbol::new(&setup.env, "pledged_amount_changed"),).into_val(&setup.env),
+                (Symbol::new(&setup.env, "contributed_amount_changed"),).into_val(&setup.env),
                 18_i128.into_val(&setup.env)
             ),
         ]
@@ -190,7 +190,7 @@ fn test_success() {
 }
 
 #[test]
-#[should_panic(expected = "sale is still running")]
+#[should_panic(expected = "Campaign is still running")]
 fn sale_still_running() {
     let setup = Setup::new();
     setup
@@ -201,7 +201,7 @@ fn sale_still_running() {
 }
 
 #[test]
-#[should_panic(expected = "sale was successful, only the recipient may withdraw")]
+#[should_panic(expected = "Campaign was successful, only the fundraiser may withdraw")]
 fn sale_successful_only_recipient() {
     let setup = Setup::new();
     setup
@@ -219,7 +219,7 @@ fn sale_successful_only_recipient() {
 }
 
 #[test]
-#[should_panic(expected = "sale was successful, only the recipient may withdraw")]
+#[should_panic(expected = "Campaign was successful, only the fundraiser may withdraw")]
 fn sale_successful_non_recipient_still_denied_after_withdrawal() {
     let setup = Setup::new();
     setup
@@ -242,7 +242,7 @@ fn sale_successful_non_recipient_still_denied_after_withdrawal() {
 }
 
 #[test]
-#[should_panic(expected = "sale was successful, recipient has withdrawn funds already")]
+#[should_panic(expected = "Campaign was successful, fundraiser has withdrawn funds already")]
 fn sale_successful_recipient_withdraws_only_once() {
     let setup = Setup::new();
     setup
@@ -265,7 +265,7 @@ fn sale_successful_recipient_withdraws_only_once() {
 }
 
 #[test]
-#[should_panic(expected = "sale expired, the recipient may not withdraw")]
+#[should_panic(expected = "Campaign expired, the fundraiser may not withdraw")]
 fn sale_expired_recipient_not_allowed() {
     let setup = Setup::new();
     advance_ledger(&setup.env, 10);
@@ -283,7 +283,7 @@ fn sale_expired_recipient_not_allowed() {
 }
 
 #[test]
-#[should_panic(expected = "sale is not running")]
+#[should_panic(expected = "Campaign is not running")]
 fn sale_not_running() {
     let setup = Setup::new();
     advance_ledger(&setup.env, 10);

@@ -1200,13 +1200,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "test_contract"
-version = "0.0.1"
-dependencies = [
- "soroban-sdk",
-]
-
-[[package]]
 name = "thiserror"
 version = "1.0.55"
 source = "registry+https://github.com/rust-lang/crates.io-index"

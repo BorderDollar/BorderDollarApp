@@ -1395,7 +1395,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1713,7 +1713,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1841,7 +1841,7 @@
             "data": {
               "vec": [
                 {
-                  "string": "caught panic 'sale expired, the recipient may not withdraw' from contract function 'Symbol(withdraw)'"
+                  "string": "caught panic 'Campaign expired, the fundraiser may not withdraw' from contract function 'Symbol(withdraw)'"
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"

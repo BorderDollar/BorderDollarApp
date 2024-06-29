@@ -42,42 +42,42 @@ fn get_recipient(e: &Env) -> Address {
     e.storage()
         .instance()
         .get::<_, Address>(&DataKey::Recipient)
-        .expect("not initialized")
+        .expect("Campaign not initialized")
 }
 
 fn get_recipient_claimed(e: &Env) -> bool {
     e.storage()
         .instance()
         .get::<_, bool>(&DataKey::RecipientClaimed)
-        .expect("not initialized")
+        .expect("Campaign not initialized")
 }
 
 fn get_deadline(e: &Env) -> u64 {
     e.storage()
         .instance()
         .get::<_, u64>(&DataKey::Deadline)
-        .expect("not initialized")
+        .expect("Campaign not initialized")
 }
 
 fn get_started(e: &Env) -> u64 {
     e.storage()
         .instance()
         .get::<_, u64>(&DataKey::Started)
-        .expect("not initialized")
+        .expect("Campaign not initialized")
 }
 
 fn get_target_amount(e: &Env) -> i128 {
     e.storage()
         .instance()
         .get::<_, i128>(&DataKey::Target)
-        .expect("not initialized")
+        .expect("Campaign not initialized")
 }
 
 fn get_token(e: &Env) -> Address {
     e.storage()
         .instance()
         .get::<_, Address>(&DataKey::Token)
-        .expect("not initialized")
+        .expect("Campaign not initialized")
 }
 
 fn get_user_deposited(e: &Env, user: &Address) -> i128 {
@@ -142,7 +142,7 @@ fn get_contributors(e: &Env) -> Vec<Address> {
 // Metadata that is added on to the WASM custom section
 contractmeta!(
     key = "Description",
-    val = "Crowdfunding contract that allows users to deposit tokens and withdraw them if the target is not met"
+    val = "Crowdfunding contract that allows users to deposit USDC for a particular campaign"
 );
 
 #[contract]
@@ -168,7 +168,7 @@ impl Crowdfund {
     ) {
         assert!(
             !e.storage().instance().has(&DataKey::Recipient),
-            "already initialized"
+            "Campaign already initialized"
         );
 
         e.storage().instance().set(&DataKey::Recipient, &recipient);
@@ -223,14 +223,14 @@ impl Crowdfund {
 
     pub fn deposit(e: Env, user: Address, amount: i128) {
         user.require_auth();
-        assert!(amount > 0, "amount must be positive");
-        assert!(get_state(&e) == State::Running, "sale is not running");
+        assert!(amount > 0, "Amount must be positive");
+        assert!(get_state(&e) == State::Running, "Campaign is not running");
         
         let token_id = get_token(&e);
         let current_target_met = target_reached(&e, &token_id);
 
         let recipient = get_recipient(&e);
-        assert!(user != recipient, "recipient may not deposit");
+        assert!(user != recipient, "Fundraiser may not deposit");
 
         let balance = get_user_deposited(&e, &user);
         set_user_deposited(&e, &user, &(balance + amount));
@@ -262,16 +262,16 @@ impl Crowdfund {
 
         match state {
             State::Running => {
-                panic!("sale is still running")
+                panic!("Campaign is still running")
             }
             State::Success => {
                 assert!(
                     to == recipient,
-                    "sale was successful, only the recipient may withdraw"
+                    "Campaign was successful, only the fundraiser may withdraw"
                 );
                 assert!(
                     !get_recipient_claimed(&e),
-                    "sale was successful, recipient has withdrawn funds already"
+                    "Campaign was successful, fundraiser has withdrawn funds already"
                 );
 
                 let token = get_token(&e);
@@ -281,7 +281,7 @@ impl Crowdfund {
             State::Expired => {
                 assert!(
                     to != recipient,
-                    "sale expired, the recipient may not withdraw"
+                    "Campaign expired, the fundraiser may not withdraw"
                 );
 
                 // Withdraw full amount

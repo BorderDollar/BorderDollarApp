@@ -1394,7 +1394,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1522,7 +1522,7 @@
             "data": {
               "vec": [
                 {
-                  "string": "caught panic 'sale is still running' from contract function 'Symbol(withdraw)'"
+                  "string": "caught panic 'Campaign is still running' from contract function 'Symbol(withdraw)'"
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"

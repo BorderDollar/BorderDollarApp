@@ -1394,7 +1394,7 @@
           "v0": {
             "topics": [
               {
-                "symbol": "pledged_amount_changed"
+                "symbol": "contributed_amount_changed"
               }
             ],
             "data": {
@@ -1584,7 +1584,7 @@
             "data": {
               "vec": [
                 {
-                  "string": "caught panic 'sale is not running' from contract function 'Symbol(deposit)'"
+                  "string": "caught panic 'Campaign is not running' from contract function 'Symbol(deposit)'"
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFCT4"

@@ -29,7 +29,7 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
       if (!walletAddress) {
         await connectWallet('Freighter', setWalletAddress);
       }
-      await sendUSDCToContract(campaignDetails.smartContract, investmentAmount);
+      await sendUSDCToContract(campaignDetails.smartContract, investmentAmount * 10000000);
       onClose();
     } catch (error) {
       console.error('Investment failed:', error);
