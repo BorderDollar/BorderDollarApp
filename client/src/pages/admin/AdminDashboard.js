@@ -212,6 +212,20 @@ const AdminDashboard = () => {
     </Flex>
   );
 
+  const InvoicesTab = () => (
+    <Flex direction="column" gap="24px" mt={8}>
+      <Flex justify="space-between" align="center">
+        <Heading as="h3" size="lg">
+          Invoices
+        </Heading>
+        <Button onClick={() => navigate('/admin/new-invoice')}>
+          Create Invoice
+        </Button>
+      </Flex>
+      {/* Add content for displaying invoices here */}
+    </Flex>
+  );
+
   const PartnersTab = () => (
     <Flex direction="column" gap="24px">
       <Flex justify="space-between" align="center" mt={8}>
@@ -367,11 +381,15 @@ const AdminDashboard = () => {
       <Tabs variant="soft-rounded" colorScheme="orange" mt={8}>
         <TabList>
           <Tab>Campaigns</Tab>
+          <Tab>Invoices</Tab>
           <Tab>Partners</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <CampaignsTab />
+          </TabPanel>
+          <TabPanel>
+            <InvoicesTab />
           </TabPanel>
           <TabPanel>
             <PartnersTab />
