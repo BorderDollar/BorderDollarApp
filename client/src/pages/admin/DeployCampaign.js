@@ -95,7 +95,7 @@ const DeployCampaign = () => {
         await sorobanContractInitialize(
           newContract,
           'GDQHOBHPYLFZBZNKQ5CSJHZC2KIULEYLGUZI2MZ6LTSDUEOGK5VIDAZO',
-          formatDateIntoUnix(endDate),
+          formatDateIntoUnix(endDate).toString(),
           amount.toString(),
           'CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA'
         );
