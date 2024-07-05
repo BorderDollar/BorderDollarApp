@@ -62,7 +62,7 @@ const MainContent = () => {
         <Heading as="h1" size={{ base: 'md', md: 'lg' }} w="100%">
           Pools
         </Heading>
-        <Text fontSize="lg">Pools and tokens of real-world assets</Text>
+        <Text fontSize="lg">Pools and campaigns of real-world assets</Text>
       </Flex>
       {loading ? (
         <Spinner size="xl" />
