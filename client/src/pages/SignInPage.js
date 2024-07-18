@@ -52,30 +52,30 @@ export default function SignIn() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithIdToken({
-      provider: 'google',
-    });
+  // const handleGoogleLogin = async () => {
+  //   const { error } = await supabase.auth.signInWithIdToken({
+  //     provider: 'google',
+  //   });
 
-    if (error) {
-      toast({
-        title: 'Error logging in with Google',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      });
-    } else {
-      setEmailSent(true);
-      toast({
-        title: 'Google Login Successful',
-        description: 'You have successfully logged in with Google.',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  };
+  //   if (error) {
+  //     toast({
+  //       title: 'Error logging in with Google',
+  //       description: error.message,
+  //       status: 'error',
+  //       duration: 9000,
+  //       isClosable: true,
+  //     });
+  //   } else {
+  //     setEmailSent(true);
+  //     toast({
+  //       title: 'Google Login Successful',
+  //       description: 'You have successfully logged in with Google.',
+  //       status: 'success',
+  //       duration: 9000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
 
   const toggleSignUp = () => {
     setIsSigningUp(!isSigningUp);
@@ -148,7 +148,7 @@ export default function SignIn() {
                 <Button width="full" mt={4} onClick={handleMagicLinkSignIn}>
                   {isSigningUp ? 'Sign Up' : 'Sign In'}
                 </Button>
-                <Button
+                {/* <Button
                   onClick={handleGoogleLogin}
                   alignItems="center"
                   borderColor="orange.300"
@@ -166,7 +166,7 @@ export default function SignIn() {
                   }
                 >
                   {isSigningUp ? 'Sign Up with Google' : 'Log In with Google'}
-                </Button>
+                </Button> */}
                 <Text mt={6}>
                   {isSigningUp
                     ? 'Already have an account?'
