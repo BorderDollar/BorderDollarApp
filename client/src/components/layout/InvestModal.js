@@ -21,10 +21,12 @@ import { connectWallet } from '../../utils/walletUtils';
 const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
   const [investmentAmount, setInvestmentAmount] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInvestmentChange = e => setInvestmentAmount(e.target.value);
 
   const handleInvest = async () => {
+    setIsLoading(true);
     try {
       if (!walletAddress) {
         await connectWallet('Freighter', setWalletAddress);
@@ -33,12 +35,15 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
       onClose();
     } catch (error) {
       console.error('Investment failed:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     if (!isOpen) {
       setInvestmentAmount('');
+      setIsLoading(false);
     } else {
       const storedWalletAddress = localStorage.getItem('walletAddress');
       if (storedWalletAddress) {
@@ -87,10 +92,17 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} size="lg" onClick={handleInvest}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            size="lg"
+            onClick={handleInvest}
+            isLoading={isLoading}
+            loadingText="Investing"
+          >
             Invest
           </Button>
-          <Button variant="ghost" size="lg" onClick={onClose}>
+          <Button variant="ghost" size="lg" onClick={onClose} isDisabled={isLoading}>
             Cancel
           </Button>
         </ModalFooter>
