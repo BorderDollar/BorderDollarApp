@@ -20,6 +20,7 @@ import {
   Td,
   Link,
   useBreakpointValue,
+  Progress,
 } from '@chakra-ui/react';
 import { supabase } from '../../api/supabaseClient';
 import { useParams } from 'react-router-dom';
@@ -35,8 +36,9 @@ const PoolDetails = () => {
   const [APR, setAPR] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [smartContract, setSmartContract] = useState('')
-
+  const [smartContract, setSmartContract] = useState('');
+  const [totalInvested, setTotalInvested] = useState(0); // New state for total invested
+  const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [partner_name, setPartnerName] = useState('');
@@ -70,10 +72,11 @@ const PoolDetails = () => {
       setStartDate(data.start_date);
       setEndDate(data.completed_date);
       setSmartContract(data.smart_contract);
-
+      setCampaignId(data.campaign_id);
       setPartnerName(data.partner.company_name);
       setPartnerLogo(data.partner.logo_url);
       setPartnerDesc(data.partner.company_description);
+      setTotalInvested(data.total_invested); // Assume this data is available
     }
     setLoading(false);
   }, [poolId]);
@@ -164,8 +167,11 @@ const PoolDetails = () => {
     APR,
     startDate,
     endDate,
-    smartContract
+    smartContract,
+    campaignId,
   };
+
+  const progress = (totalInvested / amount) * 100;
 
   return (
     <Box
@@ -297,6 +303,22 @@ const PoolDetails = () => {
             </Text>
           </Box>
         </SimpleGrid>
+
+        <Divider mb={6} />
+
+        {/* Progress Bar */}
+        <Flex direction="column" alignItems="center" mb={6}>
+          <Text fontSize="xl" fontWeight="bold" mb={2}>
+            {`Progress: ${progress.toFixed(2)}%`}
+          </Text>
+          <Progress
+            value={progress}
+            size="lg"
+            colorScheme="orange"
+            width="100%"
+            hasStripe="true" 
+          />
+        </Flex>
 
         <Divider mb={6} />
 
