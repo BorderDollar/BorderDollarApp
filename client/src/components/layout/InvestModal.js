@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { sendUSDCToContract } from '../../utils/stellarUtils';
 import { connectWallet } from '../../utils/walletUtils';
+import { supabase } from '../../api/supabaseClient';
 
 const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
   const [investmentAmount, setInvestmentAmount] = useState('');
@@ -25,13 +26,45 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
 
   const handleInvestmentChange = e => setInvestmentAmount(e.target.value);
 
+  const updateTotalInvested = async (campaignId, investmentAmount) => {
+    try {
+      const { data, error } = await supabase
+        .from('campaign')
+        .select('total_invested')
+        .eq('campaign_id', campaignId)
+        .single();
+
+      if (error) throw error;
+
+      const currentTotalInvested = parseFloat(data.total_invested || 0);
+      const newTotalInvested =
+        currentTotalInvested + parseFloat(investmentAmount);
+
+      const { error: updateError } = await supabase
+        .from('campaign')
+        .update({ total_invested: newTotalInvested })
+        .eq('campaign_id', campaignId);
+
+      if (updateError) throw updateError;
+    } catch (error) {
+      console.error('Error updating total invested:', error);
+    }
+  };
+
   const handleInvest = async () => {
     setIsLoading(true);
     try {
       if (!walletAddress) {
         await connectWallet('Freighter', setWalletAddress);
       }
-      await sendUSDCToContract(campaignDetails.smartContract, investmentAmount * 10000000);
+      await sendUSDCToContract(
+        campaignDetails.smartContract,
+        investmentAmount * 10000000
+      );
+      await updateTotalInvested(
+        campaignDetails.campaignId,
+        parseFloat(investmentAmount)
+      );
       onClose();
     } catch (error) {
       console.error('Investment failed:', error);
@@ -102,7 +135,12 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
           >
             Invest
           </Button>
-          <Button variant="ghost" size="lg" onClick={onClose} isDisabled={isLoading}>
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={onClose}
+            isDisabled={isLoading}
+          >
             Cancel
           </Button>
         </ModalFooter>
