@@ -19,7 +19,7 @@ import { sendUSDCToContract } from '../../utils/stellarUtils';
 import { connectWallet } from '../../utils/walletUtils';
 import { supabase } from '../../api/supabaseClient';
 
-const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
+const InvestModal = ({ isOpen, onClose, campaignDetails, setRefresh }) => {
   const [investmentAmount, setInvestmentAmount] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -65,6 +65,7 @@ const InvestModal = ({ isOpen, onClose, campaignDetails }) => {
         campaignDetails.campaignId,
         parseFloat(investmentAmount)
       );
+      setRefresh(prev => !prev); // Trigger data refresh
       onClose();
     } catch (error) {
       console.error('Investment failed:', error);
