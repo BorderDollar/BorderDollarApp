@@ -44,6 +44,7 @@ const PoolDetails = () => {
   const [partner_name, setPartnerName] = useState('');
   const [partner_logo, setPartnerLogo] = useState('');
   const [partner_desc, setPartnerDesc] = useState('');
+  const [refresh, setRefresh] = useState(false); // State for triggering data refresh
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -83,7 +84,7 @@ const PoolDetails = () => {
 
   useEffect(() => {
     fetchCampaign();
-  }, [fetchCampaign]);
+  }, [fetchCampaign, refresh]); // Include refresh as a dependency
 
   const formatNumberWithCommas = number => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -398,6 +399,7 @@ const PoolDetails = () => {
         isOpen={isOpen}
         onClose={onClose}
         campaignDetails={campaignDetails}
+        setRefresh={setRefresh} // Pass setRefresh as a prop
       />
     </Box>
   );
